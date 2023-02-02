@@ -5,11 +5,16 @@ const headphoneController = require("../controllers/headphoneController");
 
 /* GET users listing. */
 router.get("/", headphoneController.index);
-
+router.get("/:id",headphoneController.show);
 router.post(
   "/",
   [
     body("name").not().isEmpty().withMessage("Please enter product name."),
+    body("detail.price")
+      .not()
+      .isEmpty()
+      .withMessage("Please enter price of product")
+      .isNumeric("Please should enter a number."),
     body("detail.type")
       .not()
       .isEmpty()
@@ -29,7 +34,6 @@ router.post(
   headphoneController.insert
 );
 
-
-router.delete("/:id", headphoneController.delete)
+router.delete("/:id", headphoneController.delete);
 
 module.exports = router;

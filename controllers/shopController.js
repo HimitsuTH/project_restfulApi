@@ -1,6 +1,6 @@
+const Shop = require("../model/shop");
 const Headphone = require("../model/headphone");
-const { validationResult } = require("express-validator");
-const config = require('../config/index');
+const config = require("../config/index");
 
 const fs = require("fs");
 const path = require("path");
@@ -8,31 +8,56 @@ const uuidv4 = require("uuid");
 const { promisify } = require("util");
 const writeFileAsync = promisify(fs.writeFile);
 
+const { validationResult } = require("express-validator");
+
 exports.index = async (req, res, next) => {
+  const shops = await Shop.find()
+    .select("name photo location")
+    .sort({ _id: -1 });
+
+  const shopWithPhotoDomain = await shops.map((shop, index) => {
+    return {
+      _id: shop._id,
+      name: shop.name,
+      photo: `${config.DOMAIN}/images/${shop.photo}`,
+      location: shop.location,
+    };
+  });
+
+  res.status(200).json({
+    data: shopWithPhotoDomain,
+  });
+};
+
+exports.product = async (req, res, next) => {
+  const headphones = await Headphone.find().populate("shop");
+  // .select('name price')
+  // .where('price').gt(200);
+
+  res.status(200).json({
+    data: headphones,
+  });
+};
+
+exports.show = async (req, res, next) => {
   try {
-    let headphones = await Headphone.find().sort({ _id: -1 });
-    if (headphones.length < 0) {
-      const error = new Error("There is no information in the database!!");
+    const { id } = req.params;
+    const shop = await Shop.findById(id).populate("headphones");
+
+    const hp = await Headphone.find({
+      shop: id,
+    });
+
+
+
+    if (!shop) {
+      const error = new Error("Shop not founded!");
       error.statusCode = 400;
       throw error;
     }
 
-    const headphoneWithPhotoDomain = await headphones.map((headphone, index)=> {
-      return {
-        _id: headphone._id,
-        name: headphone.name,
-        detail: {
-          ...headphone.detail,
-          photo: `${config.DOMAIN}${config.PORT}/images/${headphone.detail.photo}`
-        },
-        shop: headphone.shop
-      };
-    })
-
-
-
     res.status(200).json({
-      data: headphoneWithPhotoDomain,
+      data: shop,
     });
   } catch (err) {
     next(err);
@@ -41,8 +66,7 @@ exports.index = async (req, res, next) => {
 
 exports.insert = async (req, res, next) => {
   try {
-    const { name, detail , shop} = req.body;
-
+    const { name, description, photo } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("received incorrect information!");
@@ -51,38 +75,16 @@ exports.insert = async (req, res, next) => {
       throw error;
     }
 
-    let headphone = new Headphone();
-
-    headphone.name = name;
-    headphone.detail = {
-      ...detail,
-      photo: detail.photo && await saveImageToDisk(detail.photo),
-    };
-    headphone.shop = shop
-
-    await headphone.save();
-
-    res.status(200).json({
-      message: `Insert product : ${name} 🎧 Successfully.`,
+    let shop = new Shop({
+      name: name,
+      description: description,
+      photo: photo && (await saveImageToDisk(photo)),
     });
-  } catch (err) {
-    next(err);
-  }
-};
 
-exports.show = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const headphone = await Headphone.findById(id).populate("headphones");
-
-    if (!headphone) {
-      const error = new Error("headphone not founded!");
-      error.statusCode = 400;
-      throw error;
-    }
+    await shop.save();
 
     res.status(200).json({
-      data: headphone,
+      message: "Insert Shop Successfully",
     });
   } catch (err) {
     next(err);
@@ -92,27 +94,39 @@ exports.show = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const hp = await Headphone.findById(id);
-    const headphone = await Headphone.deleteOne({
+    const shop_data = await Shop.findById(id);
+
+    const hp = await Headphone.find({
+      shop: id,
+    });
+
+    hp?.map(async (data) => {
+      if (data.detail.photo != "nopic.png") {
+        await deletePhoto(data.detail.photo);
+      }
+      await data.deleteOne({
+        shop: id,
+      });
+    });
+
+    const shop = await Shop.deleteOne({
       _id: id,
     });
 
-
     //check log
-    // console.log(headphone);
-    if (headphone.deletedCount === 0) {
-      const error = new Error("There are no headphones ID in the information.");
+    // console.log(headphones);
+
+    if (shop.deletedCount === 0) {
+      const error = new Error("There are no Shop ID in the information.");
       error.statusCode = 400;
       throw error;
     }
-    if (hp.detail.photo != "nopic.png") {
-      await deletePhoto(hp.detail.photo);
+    if (shop_data.photo != "nopic.png") {
+      await deletePhoto(shop_data.photo);
     }
 
-
-
     res.status(200).json({
-      message: `Successfully removed : ${hp.name} ✔`,
+      message: `Successfully removed : ${shop_data.name} ✔`,
     });
   } catch (error) {
     next(error);

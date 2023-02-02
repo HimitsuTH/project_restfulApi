@@ -30,6 +30,7 @@ mongoose.connect(
 // Routes
 const indexRouter = require("./routes/index");
 const headphoneRouter = require("./routes/headphone");
+const shopRouter = require("./routes/shops");
 
 
 app.use(logger('dev'));
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use("/headphone", headphoneRouter);
+app.use("/shop", shopRouter);
 
 
 //The 404 Route (ALWAYS Keep this as the last route)

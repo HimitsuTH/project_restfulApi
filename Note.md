@@ -1,21 +1,14 @@
-# **Type of earphones**
+# **Types of Headphones**
 
-
-หูฟังแบบที่ 1 หูฟังแบบคาดศรีษะ (Headphones)
-1. Around-Ears Headphones หูฟังครอบหู
-2. On-Ears Headphones หูฟังออนเอียร์
-
-หูฟังแบบที่ 2 (Earbuds) หูฟังเอียร์บัด
-
-หูฟังแบบที่ 3 (In Ear) หูฟังแบบมีจุกยางเสียบเข้าหู
-
-หูฟังแบบที่ 4 (Ear Clips) หูฟังแบบเกี่ยวหู
-
-หูฟังแบบที่ 5 อินเอียร์ (In-Ear Monitors) IEM
-
-หูฟังแบบที่ 6 (Custom In-Ear Monitors) คัสตอม
-
-หูฟังแบบที่ 7 (Bone Conduction Headphones) หูฟังแบบสั่นกระดูก
+1. Active Noise-Cancelling Headphones
+2. Bone Conduction Headphones
+3. Classic Earphones
+4. Closed-Back Headphones
+5. Open-Back Headphones
+6. On-Ear Headphones
+7. Earbuds
+8. Wired Headphones
+9. Wireless Headphones
 
 
 
@@ -37,6 +30,8 @@
 {
   "name": "HyperX Cloud Stinger 2",
   "detail": {
+    "photo":"",
+    "price":"",
     "type": "Gamming",
     "quantity":100,
     "brand": "HyperX",
@@ -58,5 +53,8 @@ brand: SteelSeries
 Name: HyperX Cloud Stinger 2
 type: Gaming
 brand: HyperX 
+
+
+
 
 ```
