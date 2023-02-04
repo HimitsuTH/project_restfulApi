@@ -5,7 +5,6 @@ const Schema = mongoose.Schema;
 const shopSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
-    photo: { type: String, default: "nopic.png" },
     description: {type: String, required: true, trim: true}
   },
   {

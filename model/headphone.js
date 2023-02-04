@@ -5,13 +5,12 @@ const Schema = mongoose.Schema;
 const headphoneSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
-    shop: { type: Schema.Types.ObjectId, ref: "shop" },
+    // shop: { type: Schema.Types.ObjectId, ref: "shop" },
+    // brand: { type: String, required: true, trim: true },
     detail: {
-      photo: { type: String, default: "nopic.png" },
       price: { type: Number, required: true },
       quantity: { type: Number, default: 0 },
       type: { type: String, required: true, trim: true },
-      brand: { type: String, required: true, trim: true },
       description: {
         type: String,
         required: true,

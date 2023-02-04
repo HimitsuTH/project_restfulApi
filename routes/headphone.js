@@ -19,10 +19,6 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Please enter type of product."),
-    body("detail.brand")
-      .not()
-      .isEmpty()
-      .withMessage("Please enter brand of product."),
     body("detail.description")
       .not()
       .isEmpty()
@@ -34,6 +30,7 @@ router.post(
   headphoneController.insert
 );
 
+router.put("/:id" , headphoneController.update);
 router.delete("/:id", headphoneController.delete);
 
 module.exports = router;
