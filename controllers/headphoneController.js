@@ -3,12 +3,14 @@ const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
   try {
-    let headphones = await Headphone.find().sort({ _id: -1 });
+    let headphones = await Headphone.find().sort({ _id: -1 }).select("name detail brand");
     if (headphones.length < 0) {
       const error = new Error("There is no information in the database!!");
       error.statusCode = 400;
       throw error;
     }
+
+  
 
     res.status(200).json({
       data: headphones,
@@ -20,7 +22,7 @@ exports.index = async (req, res, next) => {
 
 exports.insert = async (req, res, next) => {
   try {
-    const { name, detail, shop } = req.body;
+    const { name, detail, brand } = req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -34,7 +36,7 @@ exports.insert = async (req, res, next) => {
 
     headphone.name = name;
     headphone.detail = detail;
-    // headphone.shop = shop;
+    headphone.brand = brand;
 
     await headphone.save();
 
@@ -91,7 +93,7 @@ exports.update = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const hp = await Headphone.findById(id);
+    const beforeDelete = await Headphone.findById(id);
     const headphone = await Headphone.deleteOne({
       _id: id,
     });
@@ -105,7 +107,7 @@ exports.delete = async (req, res, next) => {
     }
 
     res.status(200).json({
-      message: `Successfully removed : ${hp.name} ✔`,
+      message: `Successfully removed : ${beforeDelete.name} ✔`,
     });
   } catch (error) {
     next(error);

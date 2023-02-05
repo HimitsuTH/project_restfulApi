@@ -27,7 +27,7 @@ exports.show = async (req, res, next) => {
     const shop = await Shop.findById(id).populate("headphones");
 
     if (!shop) {
-      const error = new Error("Shop not founded!");
+      const error = new Error("Shop not founded 🛑");
       error.statusCode = 400;
       throw error;
     }
@@ -70,11 +70,6 @@ exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
     const shop_data = await Shop.findById(id);
-
-    const hp = await Headphone.find({
-      shop: id,
-    });
-
     const shop = await Shop.deleteOne({
       _id: id,
     });
