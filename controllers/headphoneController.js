@@ -1,17 +1,13 @@
-const Headphone = require("../model/headphone");
+const Headphone = require("../models/headphone");
+const Brand = require("../models/brand");
 const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
   try {
-    let headphones = await Headphone.find().sort({ _id: -1 }).select("name detail brand");
-    if (headphones.length < 0) {
-      const error = new Error("There is no information in the database!!");
-      error.statusCode = 400;
-      throw error;
-    }
-
-  
-
+    let headphones = await Headphone.find()
+      .sort({ _id: -1 })
+      .select("name detail brand");
+      
     res.status(200).json({
       data: headphones,
     });
@@ -23,6 +19,16 @@ exports.index = async (req, res, next) => {
 exports.insert = async (req, res, next) => {
   try {
     const { name, detail, brand } = req.body;
+
+    // check id Brand in database
+    // if have id --> insert headphones in database || if none -->throw an error
+
+    const checkBrand = await Brand.findOne({ _id: brand });
+    if (!checkBrand) {
+      const error = new Error("There is no information for this ID.");
+      error.statusCode = 400;
+      throw error;
+    }
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -51,7 +57,7 @@ exports.insert = async (req, res, next) => {
 exports.show = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const headphone = await Headphone.findById(id)
+    const headphone = await Headphone.findById(id);
 
     if (!headphone) {
       const error = new Error("headphone not founded 🛑");
@@ -75,8 +81,8 @@ exports.update = async (req, res, next) => {
     const beforeUpdate = await Headphone.findById(id);
 
     const headphone = await Headphone.findByIdAndUpdate(id, {
-      name: name,
-      detail: { ...beforeUpdate.detail, ...detail},
+      name: name || beforeUpdate.name,
+      detail: { ...beforeUpdate.detail, ...detail },
     });
 
     if (!headphone) {
@@ -87,7 +93,9 @@ exports.update = async (req, res, next) => {
     res.status(200).json({
       message: "Updated Successfully",
     });
-  } catch (err) {}
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.delete = async (req, res, next) => {

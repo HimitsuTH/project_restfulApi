@@ -16,10 +16,10 @@ const shopSchema = new Schema(
 
 const shop = mongoose.model("shop", shopSchema);
 
-shopSchema.virtual("headphones", {
-  ref: "Headphone",
-  localField: "_id",
-  foreignField: "shop",
-});
+// shopSchema.virtual("brands", {
+//   ref: "Brand",
+//   localField: "_id",
+//   foreignField: "shop",
+// });
 
 module.exports = shop;

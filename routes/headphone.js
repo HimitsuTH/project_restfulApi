@@ -1,11 +1,20 @@
 const express = require("express");
 let router = express.Router();
-const { body } = require("express-validator");
+const { body , check} = require("express-validator");
 const headphoneController = require("../controllers/headphoneController");
+
+const checkId = [
+  check("id")
+    .exists()
+    .withMessage("_id field is required")
+    .bail()
+    .isMongoId()
+    .withMessage("_id must be a valid ObjectId"),
+];
+
 
 /* GET users listing. */
 router.get("/", headphoneController.index);
-router.get("/:id",headphoneController.show);
 router.post(
   "/",
   [
@@ -26,11 +35,20 @@ router.post(
     body("detail.quantity")
       .isNumeric()
       .withMessage("Please should enter a number."),
+    body("brand")
+      .not()
+      .isEmpty()
+      .withMessage("Please enter brand of headphone")
+      .exists()
+      .withMessage("_id field is required")
+      .bail()
+      .isMongoId()
+      .withMessage("_id must be a valid ObjectId"),
   ],
   headphoneController.insert
 );
-
-router.put("/:id" , headphoneController.update);
-router.delete("/:id", headphoneController.delete);
+router.get("/:id", checkId, headphoneController.show);
+router.put("/:id", checkId, headphoneController.update);
+router.delete("/:id",checkId, headphoneController.delete);
 
 module.exports = router;

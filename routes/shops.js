@@ -1,10 +1,19 @@
 const express = require("express");
 let router = express.Router();
 const shopController = require("../controllers/shopController");
-const { body } = require("express-validator");
+const { body, check } = require("express-validator");
+
+const checkId = [
+  check("id")
+    .exists()
+    .withMessage("_id field is required")
+    .bail()
+    .isMongoId()
+    .withMessage("_id must be a valid ObjectId"),
+];
 
 router.get("/", shopController.index);
-router.get("/:id", shopController.show);
+
 router.post(
   "/",
   [
@@ -13,6 +22,7 @@ router.post(
   ],
   shopController.insert
 );
-router.delete("/:id" , shopController.delete);
+router.get("/:id",checkId, shopController.show);
+router.delete("/:id",checkId, shopController.delete);
 
 module.exports = router;

@@ -1,10 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const { body } = require("express-validator");
+const { body, check } = require("express-validator");
 const brandController = require("../controllers/brandController");
 
+const checkId = [
+  check("id")
+    .exists()
+    .withMessage("_id field is required")
+    .bail()
+    .isMongoId()
+    .withMessage("_id must be a valid ObjectId"),
+];
+
 router.get("/", brandController.index);
-router.get("/:id", brandController.show);
+
 router.post(
   "/",
   [
@@ -16,7 +25,9 @@ router.post(
   ],
   brandController.insert
 );
-router.get("/product", brandController.product);
-router.delete("/:id", brandController.delete);
+
+router.get("/:id", checkId, brandController.show);
+router.get("/:id/_item",checkId, brandController._item);
+router.delete("/:id",checkId, brandController.delete);
 
 module.exports = router;
