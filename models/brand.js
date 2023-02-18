@@ -17,10 +17,10 @@ const brandSchema = new Schema(
 
 const brand = mongoose.model("brand", brandSchema);
 
-// brandSchema.virtual("headphones", {
-//   ref: "Headphone",
-//   localField: "_id",
-//   foreignField: "brand",
-// });
+brandSchema.virtual("headphones", {
+  ref: "Headphone",
+  localField: "_id",
+  foreignField: "brand",
+});
 
 module.exports = brand;

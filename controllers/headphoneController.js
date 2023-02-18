@@ -7,6 +7,7 @@ exports.index = async (req, res, next) => {
     const headphones = await Headphone.find()
       .sort({ _id: -1 })
       .populate("brand");
+   
 
     let setHeadPhone = [];
 
@@ -63,7 +64,7 @@ exports.insert = async (req, res, next) => {
 
     await headphone.save();
 
-    res.status(200).json({
+    res.status(201).json({
       message: `Insert product : ${name} 🎧 Successfully.`,
     });
   } catch (err) {
@@ -81,16 +82,30 @@ exports.show = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-    const headphone = await Headphone.findById(id);
-
+    const headphone = await Headphone.findById(id).populate("brand");
+    
     if (!headphone) {
       const error = new Error("headphone not founded ❗");
       error.statusCode = 400;
       throw error;
     }
+    
+    let setHeadPhone = [];
+    
+    setHeadPhone = [
+      {
+        id: headphone.id,
+        name: headphone.name,
+        brand: {
+          id: headphone.brand.id,
+          name: headphone.brand.name,
+        },
+        detail: headphone.detail,
+      },
+    ];
 
     res.status(200).json({
-      data: headphone,
+      data: setHeadPhone,
     });
   } catch (err) {
     next(err);
@@ -122,7 +137,7 @@ exports.update = async (req, res, next) => {
       throw error;
     }
     res.status(200).json({
-      message: "Updated Successfully",
+      message: "Updated Successfully ✔",
     });
   } catch (err) {
     next(err);
@@ -148,13 +163,15 @@ exports.delete = async (req, res, next) => {
     //check log
     // console.log(headphone);
     if (headphone.deletedCount === 0) {
-      const error = new Error("There are no headphones ID in the information.");
+      const error = new Error(
+        "Don't have Headphone ID in the information.❗"
+      );
       error.statusCode = 400;
       throw error;
     }
 
     res.status(200).json({
-      message: `Successfully removed : ${beforeDelete.name} ✔`,
+      message: `Removed Successfully : ${beforeDelete.name} ✔`,
     });
   } catch (error) {
     next(error);

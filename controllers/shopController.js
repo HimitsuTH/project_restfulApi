@@ -4,7 +4,7 @@ const Brand = require("../models/brand");
 const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
-  const shops = await Shop.find().sort({ _id: -1 });
+  const shops = await Shop.find().sort({ _id: -1 }).select("name description");
 
   res.status(200).json({
     data: shops,
@@ -17,7 +17,7 @@ exports.show = async (req, res, next) => {
     const shop = await Shop.findById(id).populate("headphones");
 
     if (!shop) {
-      const error = new Error("Shop not founded 🛑");
+      const error = new Error("Shop not founded ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -35,7 +35,7 @@ exports.insert = async (req, res, next) => {
     const { name, description } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information.❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -48,7 +48,7 @@ exports.insert = async (req, res, next) => {
 
     await shop.save();
 
-    res.status(200).json({
+    res.status(201).json({
       message: `Insert Shop: ${shop.name} ✔ Successfully`,
     });
   } catch (err) {
@@ -62,35 +62,17 @@ exports.show = async (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information.❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
     }
-    const shop = await Shop.findById(id);
-    const brandInShop = await Brand.find({ shop: id });
-
-    let setBrand = [];
-
-    brandInShop?.map(async (brand) => {
-      setBrand = [
-        ...setBrand,
-        {
-          id: brand.id,
-          name: brand.name,
-          description: brand.description,
-        },
-      ];
-    });
-
-    const setShop = {
-      id: shop._id,
-      name: shop.name,
-      Brand: setBrand,
-    };
+    const shop = await Shop.findById(id)
+      .populate("brands")
+      .select("name description");
 
     res.status(200).json({
-      data: setShop,
+      data: shop,
     });
   } catch (err) {
     next(err);
@@ -110,12 +92,12 @@ exports.update = async (req, res, next) => {
     });
 
     if (!shop) {
-      const error = new Error("shop not founded");
+      const error = new Error("shop not founded ❗");
       error.statusCode = 400;
       throw error;
     }
     res.status(200).json({
-      message: "Updated Successfully",
+      message: "Updated Successfully ✔",
     });
   } catch (err) {
     next(err);
@@ -134,13 +116,13 @@ exports.delete = async (req, res, next) => {
     // console.log(headphones);
 
     if (shop.deletedCount === 0) {
-      const error = new Error("There are no Shop ID in the information.");
+      const error = new Error("Don't have Shop ID in the information.❗");
       error.statusCode = 400;
       throw error;
     }
 
     res.status(200).json({
-      message: `Successfully removed : ${shop_data.name} ✔`,
+      message: `Removed Successfully : ${shop_data.name} ✔`,
     });
   } catch (error) {
     next(error);

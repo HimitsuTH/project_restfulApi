@@ -43,7 +43,7 @@ exports.register = async (req, res, next) => {
 
     await user.save();
 
-    res.status(200).json({
+    res.status(201).json({
       message: `Hello , ${name} : ${email}`,
     });
   } catch (err) {

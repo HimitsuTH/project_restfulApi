@@ -4,7 +4,9 @@ const Shop = require("../models/shop");
 const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
-  const brands = await Brand.find().sort({ _id: -1 });
+  const brands = await Brand.find()
+    .sort({ _id: -1 })
+    .select("name description shop");
 
   res.status(200).json({
     data: brands,
@@ -16,7 +18,7 @@ exports.insert = async (req, res, next) => {
     const { name, description, shop } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information.❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -37,7 +39,7 @@ exports.insert = async (req, res, next) => {
     // save
     await brand.save();
 
-    res.status(200).json({
+    res.status(201).json({
       message: `Insert Brand : ${name} ✔ Successfully.`,
     });
   } catch (err) {
@@ -50,18 +52,34 @@ exports._item = async (req, res, next) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information.❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
     }
 
-    const headphone = await Headphone.find({
+    const headphones = await Headphone.find({
       brand: id,
-    }).select("name detail ");
+    }).populate("brand");
+
+    let setHeadPhone = [];
+    let brandName;
+
+    headphones.map(headphone => {
+      brandName = headphone.brand.name
+      setHeadPhone = [
+        ...setHeadPhone,
+        {
+          id: headphone.id,
+          name: headphone.name,
+          detail: headphone.detail,
+        },
+      ];
+    })
 
     res.status(200).json({
-      data: headphone,
+      brand: brandName,
+      data: setHeadPhone,
     });
   } catch (err) {
     next(err);
@@ -73,7 +91,7 @@ exports.show = async (req, res, next) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information.❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -90,13 +108,10 @@ exports.show = async (req, res, next) => {
       id: brand._id,
       name: brand.name,
       description: brand.description,
-      // headphones: headphone,
     };
 
-    // setBrand.headphone = headphone;
-
     if (!brand) {
-      const error = new Error("Brand not founded 🛑");
+      const error = new Error("Brand not founded ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -115,7 +130,7 @@ exports.update = async (req, res, next) => {
     const { name, description } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information.❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -128,12 +143,12 @@ exports.update = async (req, res, next) => {
     });
 
     if (!brand) {
-      const error = new Error("brand not founded");
+      const error = new Error("brand not founded ❗");
       error.statusCode = 400;
       throw error;
     }
     res.status(200).json({
-      message: "Updated Successfully",
+      message: "Updated Successfully ✔",
     });
   } catch (err) {
     next(err);
@@ -145,7 +160,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information.❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -166,13 +181,13 @@ exports.delete = async (req, res, next) => {
       const brand = await Brand.findByIdAndDelete(id);
 
       if (brand.deletedCount === 0) {
-        const error = new Error("There are no brand ID in the information. 🏢");
+        const error = new Error("Don't brand ID in the information. 🏢");
         error.statusCode = 400;
         throw error;
       }
 
       res.status(200).json({
-        message: `Successfully removed : ${brandBefore.name} ✔`,
+        message: `Removed Successfully  : ${brandBefore.name} ✔`,
       });
     }
   } catch (error) {
