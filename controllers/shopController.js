@@ -1,5 +1,4 @@
 const Shop = require("../models/shop");
-const Headphone = require("../models/headphone");
 const Brand = require("../models/brand");
 
 const { validationResult } = require("express-validator");
@@ -50,7 +49,7 @@ exports.insert = async (req, res, next) => {
     await shop.save();
 
     res.status(200).json({
-      message: `Insert Shop: ${shop.name} Successfully`,
+      message: `Insert Shop: ${shop.name} ✔ Successfully`,
     });
   } catch (err) {
     next(err);
@@ -73,10 +72,14 @@ exports.show = async (req, res, next) => {
 
     let setBrand = [];
 
-    brandInShop?.map((brand) => {
+    brandInShop?.map(async (brand) => {
       setBrand = [
         ...setBrand,
-        { id: brand.id, name: brand.name, description: brand.description },
+        {
+          id: brand.id,
+          name: brand.name,
+          description: brand.description,
+        },
       ];
     });
 
@@ -89,7 +92,34 @@ exports.show = async (req, res, next) => {
     res.status(200).json({
       data: setShop,
     });
-  } catch (err) {}
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, description } = req.body;
+
+    const beforeUpdate = await Shop.findById(id);
+
+    const shop = await Shop.findByIdAndUpdate(id, {
+      name: name || beforeUpdate.name,
+      description: description || beforeUpdate.description,
+    });
+
+    if (!shop) {
+      const error = new Error("shop not founded");
+      error.statusCode = 400;
+      throw error;
+    }
+    res.status(200).json({
+      message: "Updated Successfully",
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 exports.delete = async (req, res, next) => {

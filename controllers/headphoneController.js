@@ -4,12 +4,29 @@ const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
   try {
-    let headphones = await Headphone.find()
+    const headphones = await Headphone.find()
       .sort({ _id: -1 })
-      .select("name detail brand");
-      
+      .populate("brand");
+
+    let setHeadPhone = [];
+
+    headphones.map((headphone) => {
+      setHeadPhone = [
+        ...setHeadPhone,
+        {
+          id: headphone.id,
+          name: headphone.name,
+          brand: {
+            id: headphone.brand.id,
+            name: headphone.brand.name
+          },
+          detail: headphone.detail,
+        },
+      ];
+    });
+
     res.status(200).json({
-      data: headphones,
+      data: setHeadPhone,
     });
   } catch (err) {
     next(err);
@@ -20,19 +37,19 @@ exports.insert = async (req, res, next) => {
   try {
     const { name, detail, brand } = req.body;
 
-    // check id Brand in database
+    // check id shop in database
     // if have id --> insert headphones in database || if none -->throw an error
 
     const checkBrand = await Brand.findOne({ _id: brand });
     if (!checkBrand) {
-      const error = new Error("There is no information for this ID.");
+      const error = new Error("For this brand ID, there is no data.❗");
       error.statusCode = 400;
       throw error;
     }
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information!");
+      const error = new Error("received incorrect information ❗");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -57,10 +74,17 @@ exports.insert = async (req, res, next) => {
 exports.show = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("received incorrect information ❗");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
     const headphone = await Headphone.findById(id);
 
     if (!headphone) {
-      const error = new Error("headphone not founded 🛑");
+      const error = new Error("headphone not founded ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -77,6 +101,13 @@ exports.update = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, detail } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("received incorrect information ❗");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
 
     const beforeUpdate = await Headphone.findById(id);
 
@@ -86,7 +117,7 @@ exports.update = async (req, res, next) => {
     });
 
     if (!headphone) {
-      const error = new Error("Headphone not founded");
+      const error = new Error("Headphone not founded ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -101,6 +132,14 @@ exports.update = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("received incorrect information ❗");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
+
     const beforeDelete = await Headphone.findById(id);
     const headphone = await Headphone.deleteOne({
       _id: id,
