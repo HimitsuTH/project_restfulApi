@@ -37,17 +37,7 @@ exports.index = async (req, res, next) => {
 exports.insert = async (req, res, next) => {
   try {
     const { name, detail, brand } = req.body;
-
-    // check id shop in database
-    // if have id --> insert headphones in database || if none -->throw an error
-
-    const checkBrand = await Brand.findOne({ _id: brand });
-    if (!checkBrand) {
-      const error = new Error("For this brand ID, there is no data.❗");
-      error.statusCode = 400;
-      throw error;
-    }
-
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("received incorrect information ❗");
@@ -55,6 +45,17 @@ exports.insert = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
+
+    // check id shop in database
+    // if have id --> insert headphones in database || if none -->throw an error
+
+    const checkBrand = await Brand.findOne({ _id: brand });
+    if (!checkBrand) {
+      const error = new Error("The shop has no data on this brand ID.❗");
+      error.statusCode = 400;
+      throw error;
+    }
+
 
     let headphone = new Headphone();
 

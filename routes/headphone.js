@@ -11,7 +11,7 @@ const checkId = [
     .withMessage("_id field is required")
     .bail()
     .isMongoId()
-    .withMessage("_id must be a valid ObjectId")
+    .withMessage("_id must be a valid ObjectId"),
 ];
 
 /* GET users listing. */
@@ -22,6 +22,15 @@ router.post(
     passportJWT,
     checkAdmin,
     body("name").not().isEmpty().withMessage("Please enter product name."),
+    body("brand")
+      .not()
+      .isEmpty()
+      .withMessage("Please enter brand of headphone")
+      .exists()
+      .withMessage("_id field is required")
+      .bail()
+      .isMongoId()
+      .withMessage("_id must be a valid ObjectId"),
     body("detail.price")
       .not()
       .isEmpty()
@@ -38,15 +47,6 @@ router.post(
     body("detail.stock")
       .isNumeric()
       .withMessage("Please should enter a number."),
-    body("brand")
-      .not()
-      .isEmpty()
-      .withMessage("Please enter brand of headphone")
-      .exists()
-      .withMessage("_id field is required")
-      .bail()
-      .isMongoId()
-      .withMessage("_id must be a valid ObjectId"),
   ],
   headphoneController.insert
 );

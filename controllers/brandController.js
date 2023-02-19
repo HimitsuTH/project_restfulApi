@@ -25,7 +25,7 @@ exports.insert = async (req, res, next) => {
     }
     const checkBrand = await Shop.findOne({ _id: shop });
     if (!checkBrand) {
-      const error = new Error("For this shop ID, there is no data.❗");
+      const error = new Error("Shop not founded.❗");
       error.statusCode = 400;
       throw error;
     }
