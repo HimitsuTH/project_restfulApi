@@ -78,3 +78,8 @@ a {
 .tagName {
   margin-bottom: 2rem;
 }
+
+/* Postman */
+.postman , .postman > a{
+  font-size: 18px;
+}
