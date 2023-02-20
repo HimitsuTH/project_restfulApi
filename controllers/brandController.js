@@ -98,11 +98,7 @@ exports.show = async (req, res, next) => {
     }
     const brand = await Brand.findById(id);
 
-    if (!brand) {
-      const error = new Error("Brand not founded ❗");
-      error.statusCode = 400;
-      throw error;
-    }
+    
 
     const setBrand = {
       id: brand._id,

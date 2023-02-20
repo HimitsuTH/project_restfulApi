@@ -12,25 +12,6 @@ exports.index = async (req, res, next) => {
   });
 };
 
-exports.show = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const shop = await Shop.findById(id).populate("headphones");
-
-    if (!shop) {
-      const error = new Error("Shop not founded ❗");
-      error.statusCode = 400;
-      throw error;
-    }
-
-    res.status(200).json({
-      data: shop,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.insert = async (req, res, next) => {
   try {
     const { name, description } = req.body;
@@ -69,7 +50,7 @@ exports.show = async (req, res, next) => {
       throw error;
     }
     const shop = await Shop.findById(id)
-      .populate("brands")
+      .populate("brands", "name description")
       .select("name description");
 
     res.status(200).json({
@@ -154,8 +135,8 @@ exports.insertBrand = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-    const checkBrand = await Shop.findOne({ _id: shop });
-    if (!checkBrand) {
+    const checkShop = await Shop.findOne({ _id: shop });
+    if (!checkShop) {
       const error = new Error("Shop not founded.❗");
       error.statusCode = 400;
       throw error;
@@ -202,12 +183,6 @@ exports.showBrand = async (req, res, next) => {
       name: brand.name,
       description: brand.description,
     };
-
-    if (!brand) {
-      const error = new Error("Brand not founded ❗");
-      error.statusCode = 400;
-      throw error;
-    }
 
     res.status(200).json({
       data: setBrand,
