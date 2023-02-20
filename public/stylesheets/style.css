@@ -57,15 +57,19 @@ a {
 .link-container > a{
   margin: 0.5rem;
   padding: 1rem;
-  background: #18191a;
+  font-size: 18px;
+  background: #3b3b3b;
   color: #E4E6EB;
   border-radius: 2rem;
   text-decoration: none;
   text-align: center;
+  box-shadow: 1px 0 5px rgba(0, 0, 0, 0.4);
+
 }
 .link-container>a:hover {
-  background-color: #303B38 ;
+  background-color: #18191a ;
   color: rgb(223, 1, 1);
+    
 }
 .card-link {
   /* background-color: #eee; */
