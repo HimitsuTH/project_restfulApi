@@ -1,9 +1,18 @@
 var express = require("express");
 var router = express.Router();
-const { body } = require("express-validator");
+const { body, check } = require("express-validator");
 const userController = require("../controllers/userController");
-
 const passportJWT = require("../middleware/passportJWT").isLogin;
+
+
+const checkId = [
+  check("id")
+    .exists()
+    .withMessage("_id field is required")
+    .bail()
+    .isMongoId()
+    .withMessage("_id must be a valid ObjectId"),
+];
 
 /* GET users listing. */
 router.get("/", userController.index);
@@ -29,7 +38,11 @@ router.post(
       .withMessage("Password should have more than 5 character."),
   ],
   userController.register
-);
+  );
+  
+router.get("/me", [passportJWT], userController.profile);
+
+//Get Delete By ID
 
 router.post(
   "/login",
@@ -50,6 +63,7 @@ router.post(
   userController.login
 );
 
-router.get("/me", [passportJWT], userController.profile);
+router.put("/:id" ,[checkId], userController.update);
+router.delete("/:id" ,[checkId], userController.delete);
 
 module.exports = router;

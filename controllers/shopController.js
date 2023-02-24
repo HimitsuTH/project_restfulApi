@@ -79,7 +79,7 @@ exports.update = async (req, res, next) => {
       throw error;
     }
     res.status(200).json({
-      message: "Updated Successfully ✔",
+      message: `Updated Successfully ✔`,
     });
   } catch (err) {
     next(err);
@@ -104,13 +104,12 @@ exports.delete = async (req, res, next) => {
     }
 
     res.status(200).json({
-      message: `Removed Successfully : ${shop_data.name} ✔`,
+      message: `Removed :  ${shop_data.name} : Successfully ✔`,
     });
   } catch (error) {
     next(error);
   }
 };
-
 
 // Brand controller 🎈
 
@@ -123,7 +122,6 @@ exports.brandIndex = async (req, res, next) => {
     data: brands,
   });
 };
-
 
 exports.insertBrand = async (req, res, next) => {
   try {
@@ -158,7 +156,6 @@ exports.insertBrand = async (req, res, next) => {
     next(err);
   }
 };
-
 
 exports.showBrand = async (req, res, next) => {
   try {
@@ -231,7 +228,6 @@ exports._item = async (req, res, next) => {
   }
 };
 
-
 exports.deleteBrand = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -243,8 +239,6 @@ exports.deleteBrand = async (req, res, next) => {
       throw error;
     }
 
-    const brandBefore = await Brand.findById(id);
-
     //delete check Headphones in brand
     const headphones = await Headphone.find({ brand: id });
     // console.log(headphones);
@@ -255,21 +249,21 @@ exports.deleteBrand = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     } else {
-      const brand = await Brand.findByIdAndDelete(id);
 
+      const brandBefore = await Brand.findById(id);
+      const brand = await Brand.deleteOne(id);
+      // console.log(brand);
       if (brand.deletedCount === 0) {
-        const error = new Error("Don't brand ID in the information. 🏢");
+        const error = new Error("Brand ID not founded. ❗");
         error.statusCode = 400;
         throw error;
       }
 
       res.status(200).json({
-        message: `Removed Successfully  : ${brandBefore.name} ✔`,
+        message: `Removed :  ${brandBefore.name} : Successfully ✔`,
       });
     }
   } catch (error) {
     next(error);
   }
 };
-
-

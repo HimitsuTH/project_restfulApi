@@ -18,7 +18,7 @@ const checkId = [
 
 
 router.get("/", shopController.index);
-router.get("/Brand", shopController.brandIndex);
+router.get("/brand", shopController.brandIndex);
 
 
 // Create Router 📍 
@@ -33,7 +33,7 @@ router.post(
   shopController.insert
 );
 router.post(
-  "/Brand",
+  "/brand",
   [
     passportJWT,
     checkAdmin,

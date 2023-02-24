@@ -113,3 +113,68 @@ exports.profile = (req, res, next) => {
     },
   });
 };
+
+exports.update = async (req,res,next) => {
+   try {
+     const { id } = req.params;
+     const { name, role } = req.body;
+     const errors = validationResult(req);
+     if (!errors.isEmpty()) {
+       const error = new Error("received incorrect information ❗");
+       error.statusCode = 422;
+       error.validation = errors.array();
+       throw error;
+     }
+
+     const beforeUpdate = await User.findById(id);
+
+     const user = await User.findByIdAndUpdate(id, {
+       name: name || beforeUpdate.name,
+       role: role || beforeUpdate.role,
+     });
+
+     if (!user) {
+       const error = new Error("User not founded. ❗");
+       error.statusCode = 400;
+       throw error;
+     }
+     res.status(200).json({
+       message: "Updated Successfully ✔",
+     });
+   } catch (err) {
+     next(err);
+   }
+}
+
+exports.delete = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+
+    // Error on param
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("received incorrect information.❗");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
+
+    const beforeDelete = await User.findById(id);
+    const user = await User.deleteOne({ _id: id });
+    // console.log(beforeDelete);
+
+
+    if (user.deletedCount === 0) {
+      const error = new Error("User ID not founded. ❗");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    res.status(200).json({
+      message: `Removed :  ${beforeDelete.email} : Successfully ✔`,
+    });
+
+  } catch (err) {
+    next(err);
+  }
+};

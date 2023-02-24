@@ -59,6 +59,8 @@ exports.insert = async (req, res, next) => {
 
     let headphone = new Headphone();
 
+
+    // setState && save
     headphone.name = name;
     headphone.detail = detail;
     headphone.brand = brand;
@@ -133,7 +135,7 @@ exports.update = async (req, res, next) => {
     });
 
     if (!headphone) {
-      const error = new Error("Headphone not founded ❗");
+      const error = new Error("Headphone not founded. ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -157,7 +159,7 @@ exports.delete = async (req, res, next) => {
     }
 
     const beforeDelete = await Headphone.findById(id);
-    const headphone = await Headphone.deleteOne({
+    const headphone = await Headphone.findByIdAndDelete({
       _id: id,
     });
 
@@ -165,14 +167,14 @@ exports.delete = async (req, res, next) => {
     // console.log(headphone);
     if (headphone.deletedCount === 0) {
       const error = new Error(
-        "Don't have Headphone ID in the information.❗"
+        "Don't have Headphone ID in the system.❗"
       );
       error.statusCode = 400;
       throw error;
     }
 
     res.status(200).json({
-      message: `Removed Successfully : ${beforeDelete.name} ✔`,
+      message: `Removed : ${beforeDelete.name} : Successfully ✔`,
     });
   } catch (error) {
     next(error);

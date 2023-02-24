@@ -50,6 +50,9 @@ router.post(
   ],
   headphoneController.insert
 );
+
+//Update Get Delete By ID
+
 router.get("/:id", checkId, headphoneController.show);
 router.put(
   "/:id",
