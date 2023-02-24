@@ -83,7 +83,19 @@ a {
   margin-bottom: 2rem;
 }
 
-/* Postman */
-.postman , .postman > a{
+/* Font */
+.subFont , .subFont > a{
   font-size: 18px;
+}
+
+/* about-container */
+
+.about-container {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(2, auto);
+}
+
+.about-container p:nth-child(even) {
+  margin-left: 0.5rem;
 }
