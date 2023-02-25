@@ -7,11 +7,10 @@ exports.index = async (req, res, next) => {
     const headphones = await Headphone.find()
       .sort({ _id: -1 })
       .populate("brand");
-   
 
     let setHeadPhone = [];
 
-    headphones.map((headphone) => {
+    await headphones.map((headphone) => {
       setHeadPhone = [
         ...setHeadPhone,
         {
@@ -19,7 +18,7 @@ exports.index = async (req, res, next) => {
           name: headphone.name,
           brand: {
             id: headphone.brand.id,
-            name: headphone.brand.name
+            name: headphone.brand.name,
           },
           detail: headphone.detail,
         },
@@ -37,7 +36,7 @@ exports.index = async (req, res, next) => {
 exports.insert = async (req, res, next) => {
   try {
     const { name, detail, brand } = req.body;
-    
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("received incorrect information ❗");
@@ -56,9 +55,7 @@ exports.insert = async (req, res, next) => {
       throw error;
     }
 
-
     let headphone = new Headphone();
-
 
     // setState && save
     headphone.name = name;
@@ -86,16 +83,14 @@ exports.show = async (req, res, next) => {
       throw error;
     }
     const headphone = await Headphone.findById(id).populate("brand");
-    
+
     if (!headphone) {
       const error = new Error("headphone not founded ❗");
       error.statusCode = 400;
       throw error;
     }
-    
-    let setHeadPhone = [];
-    
-    setHeadPhone = [
+
+    const setHeadPhone = [
       {
         id: headphone.id,
         name: headphone.name,
@@ -130,7 +125,7 @@ exports.update = async (req, res, next) => {
     const beforeUpdate = await Headphone.findById(id);
 
     const headphone = await Headphone.findByIdAndUpdate(id, {
-      name: name || beforeUpdate.name,
+      ...(name && { name }),
       detail: { ...beforeUpdate.detail, ...detail },
     });
 
@@ -158,23 +153,18 @@ exports.delete = async (req, res, next) => {
       throw error;
     }
 
-    const beforeDelete = await Headphone.findById(id);
     const headphone = await Headphone.findByIdAndDelete({
       _id: id,
     });
 
-    //check log
-    // console.log(headphone);
     if (headphone.deletedCount === 0) {
-      const error = new Error(
-        "Don't have Headphone ID in the system.❗"
-      );
+      const error = new Error("Headphone not founded.❗");
       error.statusCode = 400;
       throw error;
     }
 
     res.status(200).json({
-      message: `Removed : ${beforeDelete.name} : Successfully ✔`,
+      message: `Deleted Successfully ✔`,
     });
   } catch (error) {
     next(error);
