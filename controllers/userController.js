@@ -30,7 +30,6 @@ exports.register = async (req, res, next) => {
       throw error;
     }
 
-
     const user = new User();
     user.name = name;
     user.email = email;
