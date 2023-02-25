@@ -22,7 +22,6 @@ exports.register = async (req, res, next) => {
       throw error;
     }
 
-    let user = new User();
     const existEmail = await User.findOne({ email: email });
 
     if (existEmail) {
@@ -30,12 +29,9 @@ exports.register = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
-    if (password.length < 5) {
-      const error = new Error("Password not match!");
-      error.statusCode = 400;
-      throw error;
-    }
 
+
+    const user = new User();
     user.name = name;
     user.email = email;
     user.role = role;
@@ -44,7 +40,7 @@ exports.register = async (req, res, next) => {
     await user.save();
 
     res.status(201).json({
-      message: `Hello , ${name} : ${email}`,
+      message: `Hello , name : ${name} | email : ${email}`,
     });
   } catch (err) {
     next(err);
@@ -114,42 +110,39 @@ exports.profile = (req, res, next) => {
   });
 };
 
-exports.update = async (req,res,next) => {
-   try {
-     const { id } = req.params;
-     const { name, role } = req.body;
-     const errors = validationResult(req);
-     if (!errors.isEmpty()) {
-       const error = new Error("received incorrect information ❗");
-       error.statusCode = 422;
-       error.validation = errors.array();
-       throw error;
-     }
+exports.update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, role } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const error = new Error("received incorrect information ❗");
+      error.statusCode = 422;
+      error.validation = errors.array();
+      throw error;
+    }
 
-     const beforeUpdate = await User.findById(id);
+    const user = await User.findByIdAndUpdate(id, {
+      ...(name && { name }),
+      ...(role && { role }),
+    });
 
-     const user = await User.findByIdAndUpdate(id, {
-       name: name || beforeUpdate.name,
-       role: role || beforeUpdate.role,
-     });
-
-     if (!user) {
-       const error = new Error("User not founded. ❗");
-       error.statusCode = 400;
-       throw error;
-     }
-     res.status(200).json({
-       message: "Updated Successfully ✔",
-     });
-   } catch (err) {
-     next(err);
-   }
-}
+    if (!user) {
+      const error = new Error("User not founded. ❗");
+      error.statusCode = 400;
+      throw error;
+    }
+    res.status(200).json({
+      message: "Updated Successfully ✔",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.delete = async (req, res, next) => {
   const { id } = req.params;
   try {
-
     // Error on param
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -158,11 +151,8 @@ exports.delete = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-
-    const beforeDelete = await User.findById(id);
     const user = await User.deleteOne({ _id: id });
     // console.log(beforeDelete);
-
 
     if (user.deletedCount === 0) {
       const error = new Error("User ID not founded. ❗");
@@ -171,9 +161,8 @@ exports.delete = async (req, res, next) => {
     }
 
     res.status(200).json({
-      message: `Removed :  ${beforeDelete.email} : Successfully ✔`,
+      message: `Deleted Successfully ✔`,
     });
-
   } catch (err) {
     next(err);
   }
