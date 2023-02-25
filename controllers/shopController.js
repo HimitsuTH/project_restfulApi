@@ -72,7 +72,7 @@ exports.update = async (req, res, next) => {
     });
 
     if (!shop) {
-      const error = new Error("shop not founded ❗");
+      const error = new Error("Shop not founded ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -90,7 +90,7 @@ exports.delete = async (req, res, next) => {
     const shop = await Shop.deleteOne({ _id: id });
 
     if (shop.deletedCount === 0) {
-      const error = new Error("Don't have Shop ID in the information.❗");
+      const error = new Error("Shop not founded.❗");
       error.statusCode = 400;
       throw error;
     }
