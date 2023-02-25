@@ -5,7 +5,7 @@ const Headphone = require("../models/headphone");
 const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
-  const shops = await Shop.find().sort({ _id: -1 }).select("name description");
+  const shops = await Shop.find().select("name description").sort({ _id: -1 });
 
   res.status(200).json({
     data: shops,
@@ -31,7 +31,7 @@ exports.insert = async (req, res, next) => {
     await shop.save();
 
     res.status(201).json({
-      message: `Insert Shop: ${shop.name} ✔ Successfully`,
+      message: `Insert Shop: ${name} ✔ Successfully`,
     });
   } catch (err) {
     next(err);
