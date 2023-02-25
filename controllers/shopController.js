@@ -66,11 +66,9 @@ exports.update = async (req, res, next) => {
     const { id } = req.params;
     const { name, description } = req.body;
 
-    const beforeUpdate = await Shop.findById(id);
-
     const shop = await Shop.findByIdAndUpdate(id, {
-      name: name || beforeUpdate.name,
-      description: description || beforeUpdate.description,
+      ...(name && { name }),
+      ...(description && { description }),
     });
 
     if (!shop) {
@@ -89,13 +87,7 @@ exports.update = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const shop_data = await Shop.findById(id);
-    const shop = await Shop.deleteOne({
-      _id: id,
-    });
-
-    //check log
-    // console.log(headphones);
+    const shop = await Shop.deleteOne({ _id: id });
 
     if (shop.deletedCount === 0) {
       const error = new Error("Don't have Shop ID in the information.❗");
@@ -104,7 +96,7 @@ exports.delete = async (req, res, next) => {
     }
 
     res.status(200).json({
-      message: `Removed :  ${shop_data.name} : Successfully ✔`,
+      message: `Deleted Successfully ✔`,
     });
   } catch (error) {
     next(error);
@@ -141,10 +133,11 @@ exports.insertBrand = async (req, res, next) => {
     }
 
     // set state value
-    const brand = new Brand();
-    brand.name = name;
-    brand.description = description;
-    brand.shop = shop;
+    const brand = new Brand({
+      name,
+      description,
+      shop,
+    });
 
     // save
     await brand.save();
@@ -249,8 +242,6 @@ exports.deleteBrand = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     } else {
-
-      const brandBefore = await Brand.findById(id);
       const brand = await Brand.deleteOne(id);
       // console.log(brand);
       if (brand.deletedCount === 0) {
@@ -260,7 +251,7 @@ exports.deleteBrand = async (req, res, next) => {
       }
 
       res.status(200).json({
-        message: `Removed :  ${brandBefore.name} : Successfully ✔`,
+        message: `Deleted Successfully ✔`,
       });
     }
   } catch (error) {
