@@ -59,9 +59,8 @@ exports.login = async (req, res, next) => {
     }
 
     const user = await User.findOne({ email: email });
-
     if (!user) {
-      const error = new Error("user has alrealy exist!");
+      const error = new Error("User has alrealy exist!");
       error.statusCode = 404;
       throw error;
     }

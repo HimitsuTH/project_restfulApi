@@ -125,6 +125,14 @@ exports.insertBrand = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
+    const checkBrand = await Brand.findOne({ name: name });
+
+    if (checkBrand) {
+      const error = new Error("Brand has alrealy exist!");
+      error.statusCode = 404;
+      throw error;
+    }
+
     const checkShop = await Shop.findOne({ _id: shop });
     if (!checkShop) {
       const error = new Error("Shop not founded.❗");
@@ -242,7 +250,7 @@ exports.deleteBrand = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     } else {
-      const brand = await Brand.deleteOne(id);
+      const brand = await Brand.deleteOne({ _id: id });
       // console.log(brand);
       if (brand.deletedCount === 0) {
         const error = new Error("Brand ID not founded. ❗");
