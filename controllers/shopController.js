@@ -53,6 +53,12 @@ exports.show = async (req, res, next) => {
       .populate("brands", "name description")
       .select("name description");
 
+    if(!shop){
+      const error = new Error("Shop not founded ❗");
+      error.statusCode = 400;
+      throw error;
+    }      
+
     res.status(200).json({
       data: shop,
     });
@@ -125,11 +131,11 @@ exports.insertBrand = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-    const checkBrand = await Brand.findOne({ name: name });
+    const checkBrandName = await Brand.findOne({ name: name });
 
-    if (checkBrand) {
+    if (checkBrandName) {
       const error = new Error("Brand has alrealy exist!");
-      error.statusCode = 404;
+      error.statusCode = 400;
       throw error;
     }
 
