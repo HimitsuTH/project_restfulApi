@@ -1,5 +1,5 @@
-const Headphone = require("../models/headphone");
-const Brand = require("../models/brand");
+const Headphone = require("@models/headphone");
+const Brand = require("@models/brand");
 const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {

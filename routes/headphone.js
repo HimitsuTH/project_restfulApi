@@ -1,10 +1,10 @@
 const express = require("express");
 let router = express.Router();
 const { body } = require("express-validator");
-const headphoneController = require("../controllers/headphoneController");
-const passportJWT = require("../middleware/passportJWT").isLogin;
-const checkAdmin = require("../middleware/checkAdmin").isAdmin;
-const checkId = require("../middleware/checkId").checkId;
+const headphoneController = require("@controllers/headphoneController");
+const passportJWT = require("@middleware/passportJWT").isLogin;
+const checkAdmin = require("@middleware/checkAdmin").isAdmin;
+const checkId = require("@middleware/checkId").checkId;
 
 
 /* GET users listing. */

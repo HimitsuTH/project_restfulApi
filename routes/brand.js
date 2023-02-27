@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { body, check } = require("express-validator");
-const brandController = require("../controllers/brandController");
-const passportJWT = require("../middleware/passportJWT").isLogin;
-const checkAdmin = require("../middleware/checkAdmin").isAdmin;
+const brandController = require("@controllers/brandController");
+const passportJWT = require("@middleware/passportJWT").isLogin;
+const checkAdmin = require("@middleware/checkAdmin").isAdmin;
 
 const checkId = [
   check("id")

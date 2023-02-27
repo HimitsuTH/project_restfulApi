@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
-const { body, check } = require("express-validator");
-const userController = require("../controllers/userController");
-const passportJWT = require("../middleware/passportJWT").isLogin;
-const checkId = require("../middleware/checkId").checkId;
+const { body } = require("express-validator");
+const userController = require("@controllers/userController");
+const passportJWT = require("@middleware/passportJWT").isLogin;
+const checkId = require("@middleware/checkId").checkId;
 
 /* GET users listing. */
 router.get("/", userController.index);

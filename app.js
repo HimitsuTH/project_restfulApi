@@ -2,13 +2,14 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+require("module-alias/register");
 
 const app = express();
 
-const config = require("./config/index");
+const config = require("@config/index");
 
 //MiddleWare
-const errorHandler = require("./middleware/errorHandler");
+const errorHandler = require("@middleware/errorHandler");
 
 // mongoose setting
 const mongoose = require("mongoose");
@@ -20,10 +21,10 @@ mongoose.connect(config.MONGODB_URI, {
 });
 
 // Routes
-const indexRouter = require("./routes/index");
-const headphoneRouter = require("./routes/headphone");
-const shopRouter = require("./routes/shops");
-const userRouter = require("./routes/user");
+const indexRouter = require("@routes/index");
+const headphoneRouter = require("@routes/headphone");
+const shopRouter = require("@routes/shops");
+const userRouter = require("@routes/user");
 
 //not used
 // const brandRouter = require("./routes/brand")

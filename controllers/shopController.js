@@ -1,6 +1,6 @@
-const Shop = require("../models/shop");
-const Brand = require("../models/brand");
-const Headphone = require("../models/headphone");
+const Shop = require("@models/shop");
+const Brand = require("@models/brand");
+const Headphone = require("@models/headphone");
 
 const { validationResult } = require("express-validator");
 
