@@ -3,16 +3,17 @@ let router = express.Router();
 const shopController = require("../controllers/shopController");
 const passportJWT = require("../middleware/passportJWT").isLogin;
 const checkAdmin = require("../middleware/checkAdmin").isAdmin;
-const { body, check } = require("express-validator");
+const { body } = require("express-validator");
+const checkId = require("../middleware/checkId").checkId;
 
-const checkId = [
-  check("id")
-    .exists()
-    .withMessage("_id field is required")
-    .bail()
-    .isMongoId()
-    .withMessage("_id must be a valid ObjectId"),
-];
+// const checkId = [
+//   check("id")
+//     .exists()
+//     .withMessage("_id field is required")
+//     .bail()
+//     .isMongoId()
+//     .withMessage("_id must be a valid ObjectId"),
+// ];
 
 // Get data
 

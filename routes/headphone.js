@@ -1,18 +1,11 @@
 const express = require("express");
 let router = express.Router();
-const { body, check } = require("express-validator");
+const { body } = require("express-validator");
 const headphoneController = require("../controllers/headphoneController");
 const passportJWT = require("../middleware/passportJWT").isLogin;
 const checkAdmin = require("../middleware/checkAdmin").isAdmin;
+const checkId = require("../middleware/checkId").checkId;
 
-const checkId = [
-  check("id")
-    .exists()
-    .withMessage("_id field is required")
-    .bail()
-    .isMongoId()
-    .withMessage("_id must be a valid ObjectId"),
-];
 
 /* GET users listing. */
 router.get("/", headphoneController.index);
