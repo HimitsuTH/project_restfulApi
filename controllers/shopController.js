@@ -228,7 +228,11 @@ exports._item = async (req, res, next) => {
         {
           id: headphone.id,
           name: headphone.name,
-          detail: headphone.detail,
+          price: headphone.price,
+          stock: headphone.stock,
+          category: headphone.category,
+          description: headphone.description,
+          warranty: headphone.warranty,
         },
       ];
     });
