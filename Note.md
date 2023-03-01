@@ -38,21 +38,4 @@
 }
 ```
 
-# Data
 
-```javascript
-
-1.
-Name: SteelSeries Arctis 9 Wireless Headphone
-type: Gaming
-brand: SteelSeries
-
-2.
-Name: HyperX Cloud Stinger 2
-type: Gaming
-brand: HyperX
-
-
-
-
-```
