@@ -16,10 +16,7 @@ exports.index = async (req, res, next) => {
         {
           id: headphone.id,
           name: headphone.name,
-          brand: {
-            id: headphone.brand.id,
-            name: headphone.brand.name,
-          },
+          brand: headphone.brand.name,
           price: headphone.price,
           stock: headphone.stock,
           category: headphone.category,
@@ -101,10 +98,7 @@ exports.show = async (req, res, next) => {
       {
         id: headphone.id,
         name: headphone.name,
-        brand: {
-          id: headphone.brand.id,
-          name: headphone.brand.name,
-        },
+        brand: headphone.brand.name,
         price: headphone.price,
         stock: headphone.stock,
         category: headphone.category,
