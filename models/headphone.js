@@ -6,7 +6,7 @@ const headphoneSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     brand: { type: Schema.Types.ObjectId, ref: "brand" },
-    price: { type: Number, required: true, default: 0 },
+    price: { type: Number, required: true },
     stock: { type: Number, default: 0 },
     category: { type: String, required: true, trim: true, lowercase: true },
     description: { type: String, required: true, trim: true },
