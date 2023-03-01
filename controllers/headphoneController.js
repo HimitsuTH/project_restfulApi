@@ -22,7 +22,7 @@ exports.index = async (req, res, next) => {
           },
           price: headphone.price,
           stock: headphone.stock,
-          type: headphone.type,
+          category: headphone.category,
           description: headphone.description,
           warranty: headphone.warranty,
         },
@@ -39,7 +39,7 @@ exports.index = async (req, res, next) => {
 
 exports.insert = async (req, res, next) => {
   try {
-    const { name, brand, price, stock, description, type, warranty } = req.body;
+    const { name, brand, price, stock, description, category, warranty } = req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -66,7 +66,7 @@ exports.insert = async (req, res, next) => {
       stock: stock,
       warranty: warranty,
       description: description,
-      type: type,
+      category: category,
     });
 
     await headphone.save();
@@ -107,7 +107,7 @@ exports.show = async (req, res, next) => {
         },
         price: headphone.price,
         stock: headphone.stock,
-        type: headphone.type,
+        category: headphone.category,
         description: headphone.description,
         warranty: headphone.warranty,
       },
@@ -124,7 +124,7 @@ exports.show = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, price, stock, description, type, warranty } = req.body;
+    const { name, price, stock, description, category, warranty } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("received incorrect information ❗");
@@ -137,7 +137,7 @@ exports.update = async (req, res, next) => {
       ...(name && { name: name }),
       ...(price && { price: price }),
       ...(stock && { stock: stock }),
-      ...(type && { type: type }),
+      ...(category && { category: category }),
       ...(description && { description: description }),
       ...(warranty && { warranty: warranty }),
     });

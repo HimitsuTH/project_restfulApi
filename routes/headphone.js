@@ -29,7 +29,7 @@ router.post(
       .isEmpty()
       .withMessage("Please enter price of product")
       .isNumeric("Please should enter a number."),
-    body("type")
+    body("category")
       .not()
       .isEmpty()
       .withMessage("Please enter type of product."),
@@ -37,9 +37,7 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Please enter the product description."),
-    body("stock")
-      .isNumeric()
-      .withMessage("Please should enter a number."),
+    body("stock").isNumeric().withMessage("Please should enter a number."),
   ],
   headphoneController.insert
 );
