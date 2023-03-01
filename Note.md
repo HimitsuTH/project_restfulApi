@@ -9,6 +9,7 @@
 7. Earbuds
 8. Wired Headphones
 9. Wireless Headphones
+10. etc.
 
 # Insert
 
