@@ -8,8 +8,8 @@ const headphoneSchema = new Schema(
     brand: { type: Schema.Types.ObjectId, ref: "brand" },
     price: { type: Number, required: true, default: 0 },
     stock: { type: Number, default: 0 },
-    category: { type: String, required: true, trim: true },
-    description: { type: String, required: true, trim: true,},
+    category: { type: String, required: true, trim: true, lowercase: true },
+    description: { type: String, required: true, trim: true },
     warranty: { type: String, default: "Product without warranty" },
   },
   {
