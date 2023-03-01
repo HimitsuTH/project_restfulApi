@@ -24,20 +24,20 @@ router.post(
       .bail()
       .isMongoId()
       .withMessage("_id must be a valid ObjectId"),
-    body("detail.price")
+    body("price")
       .not()
       .isEmpty()
       .withMessage("Please enter price of product")
       .isNumeric("Please should enter a number."),
-    body("detail.type")
+    body("type")
       .not()
       .isEmpty()
       .withMessage("Please enter type of product."),
-    body("detail.description")
+    body("description")
       .not()
       .isEmpty()
       .withMessage("Please enter the product description."),
-    body("detail.stock")
+    body("stock")
       .isNumeric()
       .withMessage("Please should enter a number."),
   ],

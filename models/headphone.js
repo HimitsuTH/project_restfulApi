@@ -5,19 +5,16 @@ const Schema = mongoose.Schema;
 const headphoneSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
-
     brand: { type: Schema.Types.ObjectId, ref: "brand" },
-    detail: {
-      price: { type: Number, required: true },
-      stock: { type: Number, default: 0 },
-      type: { type: String, required: true, trim: true },
-      description: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      warranty: { type: String, default: "Product without warranty" },
+    price: { type: Number, required: true, default: 0 },
+    stock: { type: Number, default: 0 },
+    type: { type: String, required: true, trim: true },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
     },
+    warranty: { type: String, default: "Product without warranty" },
   },
   {
     collection: "headphones",

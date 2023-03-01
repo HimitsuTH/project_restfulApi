@@ -20,7 +20,11 @@ exports.index = async (req, res, next) => {
             id: headphone.brand.id,
             name: headphone.brand.name,
           },
-          detail: headphone.detail,
+          price: headphone.price,
+          stock: headphone.stock,
+          type: headphone.type,
+          description: headphone.description,
+          warranty: headphone.warranty,
         },
       ];
     });
@@ -35,7 +39,7 @@ exports.index = async (req, res, next) => {
 
 exports.insert = async (req, res, next) => {
   try {
-    const { name, detail, brand } = req.body;
+    const { name, brand, price, stock, description, type, warranty } = req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -54,13 +58,16 @@ exports.insert = async (req, res, next) => {
       error.statusCode = 400;
       throw error;
     }
-
-    let headphone = new Headphone();
-
     // setState && save
-    headphone.name = name;
-    headphone.detail = detail;
-    headphone.brand = brand;
+    let headphone = new Headphone({
+      name: name,
+      brand: brand,
+      price: price,
+      stock: stock,
+      warranty: warranty,
+      description: description,
+      type: type,
+    });
 
     await headphone.save();
 
@@ -98,7 +105,11 @@ exports.show = async (req, res, next) => {
           id: headphone.brand.id,
           name: headphone.brand.name,
         },
-        detail: headphone.detail,
+        price: headphone.price,
+        stock: headphone.stock,
+        type: headphone.type,
+        description: headphone.description,
+        warranty: headphone.warranty,
       },
     ];
 
@@ -113,7 +124,7 @@ exports.show = async (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, detail } = req.body;
+    const { name, price, stock, description, type, warranty } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("received incorrect information ❗");
@@ -122,11 +133,13 @@ exports.update = async (req, res, next) => {
       throw error;
     }
 
-    const beforeUpdate = await Headphone.findById(id);
-
     const headphone = await Headphone.findByIdAndUpdate(id, {
-      ...(name && { name }),
-      detail: { ...beforeUpdate.detail, ...detail },
+      ...(name && { name: name }),
+      ...(price && { price: price }),
+      ...(stock && { stock: stock }),
+      ...(type && { type: type }),
+      ...(description && { description: description }),
+      ...(warranty && { warranty: warranty }),
     });
 
     if (!headphone) {
