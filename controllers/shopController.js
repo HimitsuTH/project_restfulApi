@@ -121,7 +121,7 @@ exports.update = async (req, res, next) => {
 exports.brandIndex = async (req, res, next) => {
   const brands = await Brand.find()
     .sort({ _id: -1 })
-    .select("name description shop");
+    .select("name description ");
 
   res.status(200).json({
     data: brands,
