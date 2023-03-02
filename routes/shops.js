@@ -51,7 +51,7 @@ router.post(
 //Update Get Delete By ID 📍
 
 router.get("/brand/:id", checkId, shopController.showBrand);
-router.get("/brand/:id/_item", checkId, shopController._item);
+// router.get("/brand/:id/_item", checkId, shopController._item);
 router.delete(
   "/brand/:id",
   [passportJWT, checkAdmin, checkId],

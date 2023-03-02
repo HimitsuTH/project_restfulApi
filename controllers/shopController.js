@@ -181,7 +181,7 @@ exports.showBrand = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-    const brand = await Brand.findById(id);
+    const brand = await Brand.findById(id).select("name description").populate("headphones","-createdAt -updatedAt -__v");
 
     if (!brand) {
       const error = new Error("Brand not founded ❗");
@@ -189,62 +189,56 @@ exports.showBrand = async (req, res, next) => {
       throw error;
     }
 
-    const setBrand = {
-      id: brand._id,
-      name: brand.name,
-      description: brand.description,
-    };
-
     res.status(200).json({
-      data: setBrand,
+      data: brand,
     });
   } catch (err) {
     next(err);
   }
 };
 
-exports._item = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information.❗");
-      error.statusCode = 422;
-      error.validation = errors.array();
-      throw error;
-    }
+// exports._item = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       const error = new Error("received incorrect information.❗");
+//       error.statusCode = 422;
+//       error.validation = errors.array();
+//       throw error;
+//     }
 
-    const headphones = await Headphone.find({
-      brand: id,
-    }).populate("brand");
+//     const headphones = await Headphone.find({
+//       brand: id,
+//     }).populate("brand");
 
-    let setHeadPhone = [];
-    let brandName;
+//     let setHeadPhone = [];
+//     let brandName;
 
-    headphones.map((headphone) => {
-      brandName = headphone.brand.name;
-      setHeadPhone = [
-        ...setHeadPhone,
-        {
-          id: headphone.id,
-          name: headphone.name,
-          price: headphone.price,
-          stock: headphone.stock,
-          category: headphone.category,
-          description: headphone.description,
-          warranty: headphone.warranty,
-        },
-      ];
-    });
+//     headphones.map((headphone) => {
+//       brandName = headphone.brand.name;
+//       setHeadPhone = [
+//         ...setHeadPhone,
+//         {
+//           id: headphone.id,
+//           name: headphone.name,
+//           price: headphone.price,
+//           stock: headphone.stock,
+//           category: headphone.category,
+//           description: headphone.description,
+//           warranty: headphone.warranty,
+//         },
+//       ];
+//     });
 
-    res.status(200).json({
-      brand: brandName,
-      data: setHeadPhone,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+//     res.status(200).json({
+//       brand: brandName,
+//       data: setHeadPhone,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 exports.deleteBrand = async (req, res, next) => {
   try {
