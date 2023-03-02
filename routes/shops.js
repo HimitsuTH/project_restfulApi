@@ -15,16 +15,16 @@ router.get("/brand", shopController.brandIndex);
 
 
 // Create Router 📍 
-router.post(
-  "/",
-  [ 
-    passportJWT, 
-    checkAdmin,
-    body("name").not().isEmpty().withMessage("Please Enter your name."),
-    body("description").not().isEmpty().withMessage("Please Enter some text."),
-  ],
-  shopController.insert
-);
+// router.post(
+//   "/",
+//   [ 
+//     passportJWT, 
+//     checkAdmin,
+//     body("name").not().isEmpty().withMessage("Please Enter your name."),
+//     body("description").not().isEmpty().withMessage("Please Enter some text."),
+//   ],
+//   shopController.insert
+// );
 router.post(
   "/brand",
   [
@@ -48,7 +48,7 @@ router.post(
   shopController.insertBrand
 );
 
-//Update Get Delete By ID
+//Update Get Delete By ID 📍
 
 router.get("/brand/:id", checkId, shopController.showBrand);
 router.get("/brand/:id/_item", checkId, shopController._item);
@@ -58,9 +58,9 @@ router.delete(
   shopController.deleteBrand
 );
 
-router.get("/:id", checkId, shopController.show);
+// router.get("/:id", checkId, shopController.show);
 router.put("/:id", [passportJWT, checkAdmin, checkId], shopController.update);
-router.delete("/:id", [passportJWT,checkAdmin, checkId], shopController.delete);
+// router.delete("/:id", [passportJWT,checkAdmin, checkId], shopController.delete);
 
 
 

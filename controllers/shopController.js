@@ -12,60 +12,60 @@ exports.index = async (req, res, next) => {
   });
 };
 
-exports.insert = async (req, res, next) => {
-  try {
-    const { name, description } = req.body;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information.❗");
-      error.statusCode = 422;
-      error.validation = errors.array();
-      throw error;
-    }
+// exports.insert = async (req, res, next) => {
+//   try {
+//     const { name, description } = req.body;
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       const error = new Error("received incorrect information.❗");
+//       error.statusCode = 422;
+//       error.validation = errors.array();
+//       throw error;
+//     }
 
-    let shop = new Shop({
-      name: name,
-      description: description,
-    });
+//     let shop = new Shop({
+//       name: name,
+//       description: description,
+//     });
 
-    await shop.save();
+//     await shop.save();
 
-    res.status(201).json({
-      message: `Insert Shop: ${name} ✔ Successfully`,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+//     res.status(201).json({
+//       message: `Insert Shop: ${name} ✔ Successfully`,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-exports.show = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+// exports.show = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information.❗");
-      error.statusCode = 422;
-      error.validation = errors.array();
-      throw error;
-    }
-    const shop = await Shop.findById(id)
-      .populate("brands", "name description")
-      .select("name description");
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       const error = new Error("received incorrect information.❗");
+//       error.statusCode = 422;
+//       error.validation = errors.array();
+//       throw error;
+//     }
+//     const shop = await Shop.findById(id)
+//       .populate("brands", "name description")
+//       .select("name description");
 
-    if (!shop) {
-      const error = new Error("Shop not founded ❗");
-      error.statusCode = 400;
-      throw error;
-    }
+//     if (!shop) {
+//       const error = new Error("Shop not founded ❗");
+//       error.statusCode = 400;
+//       throw error;
+//     }
 
-    res.status(200).json({
-      data: shop,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+//     res.status(200).json({
+//       data: shop,
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 exports.update = async (req, res, next) => {
   try {
@@ -97,24 +97,24 @@ exports.update = async (req, res, next) => {
   }
 };
 
-exports.delete = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const shop = await Shop.deleteOne({ _id: id });
+// exports.delete = async (req, res, next) => {
+//   try {
+//     const { id } = req.params;
+//     const shop = await Shop.deleteOne({ _id: id });
 
-    if (shop.deletedCount === 0) {
-      const error = new Error("Shop not founded.❗");
-      error.statusCode = 400;
-      throw error;
-    }
+//     if (shop.deletedCount === 0) {
+//       const error = new Error("Shop not founded.❗");
+//       error.statusCode = 400;
+//       throw error;
+//     }
 
-    res.status(200).json({
-      message: `Deleted Successfully ✔`,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.status(200).json({
+//       message: `Deleted Successfully ✔`,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // Brand controller 🎈
 
