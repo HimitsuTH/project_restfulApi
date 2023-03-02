@@ -111,7 +111,7 @@ exports.profile = (req, res, next) => {
 exports.update = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, role } = req.body;
+    const { name, password } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const error = new Error("received incorrect information ❗");
@@ -120,12 +120,23 @@ exports.update = async (req, res, next) => {
       throw error;
     }
 
-    const user = await User.findByIdAndUpdate(id, {
-      ...(name && { name }),
-      ...(role && { role }),
-    });
+    if (password?.length <= 5) {
+      const error = new Error("Password more than 5 characters.");
+      error.statusCode = 400;
+      throw error;
+    }
 
-    if (!user) {
+    const user = await User.findById(id);
+
+    const updateUser = await User.updateOne(
+      { _id: id },
+      {
+        ...(name && { name }),
+        ...(password && { password: await user?.encryptPassword(password) }),
+      }
+    );
+
+    if (updateUser.nModified === 0) {
       const error = new Error("User not founded. ❗");
       error.statusCode = 400;
       throw error;
