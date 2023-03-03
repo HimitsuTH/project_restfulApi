@@ -60,6 +60,6 @@ router.put(
   passportJWT,
   userController.update
 );
-router.delete("/:id", [passportJWT, checkId], userController.delete);
+router.delete("/:id", [passportJWT,checkAdmin,checkId], userController.delete);
 
 module.exports = router;
