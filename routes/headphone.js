@@ -28,7 +28,8 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Please enter price of product")
-      .isNumeric("Please should enter a number."),
+      .isNumeric()
+      .withMessage("Please should enter a number."),
     body("category")
       .not()
       .isEmpty()
