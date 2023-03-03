@@ -79,7 +79,7 @@ exports.index = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    const { id } = req.params;
+  
     const { name, description } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -89,10 +89,13 @@ exports.update = async (req, res, next) => {
       throw error;
     }
 
-    const shop = await Shop.findByIdAndUpdate(id, {
-      ...(name && { name }),
-      ...(description && { description }),
-    });
+    const shop = await Shop.findByIdAndUpdate(
+      { _id: config.SHOP_ID },
+      {
+        ...(name && { name }),
+        ...(description && { description }),
+      }
+    );
 
     if (!shop) {
       const error = new Error("Shop not founded ❗");

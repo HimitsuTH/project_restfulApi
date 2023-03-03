@@ -59,7 +59,7 @@ router.delete(
 );
 
 // router.get("/:id", checkId, shopController.show);
-router.put("/:id", [passportJWT, checkAdmin, checkId], shopController.update);
+router.put("/", [passportJWT, checkAdmin], shopController.update);
 // router.delete("/:id", [passportJWT,checkAdmin, checkId], shopController.delete);
 
 
