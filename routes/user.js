@@ -58,11 +58,6 @@ router.post(
 router.put(
   "/me/update",
   passportJWT,
-  [
-    body("password")
-      .isLength({ min: 6 })
-      .withMessage("Password should have more than 5 character."),
-  ],
   userController.update
 );
 router.delete("/:id", [passportJWT, checkId], userController.delete);

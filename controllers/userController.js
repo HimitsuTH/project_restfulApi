@@ -120,6 +120,12 @@ exports.update = async (req, res, next) => {
       throw error;
     }
 
+    if (password?.length <= 5) {
+      const error = new Error("Password more than 5 characters.");
+      error.statusCode = 400;
+      throw error;
+    }
+
     const user = await User.findById(id);
 
     const updateUser = await User.updateOne(
