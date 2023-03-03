@@ -8,7 +8,6 @@ const shopSchema = new Schema(
     description: { type: String, required: true, trim: true },
     address: {
       street: { type: String, required: true, trim: true },
-      city: { type: String, required: true, trim: true },
       zip: { type: String, required: true, trim: true },
       province: { type: String, required: true, trim: true },
     },
