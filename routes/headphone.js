@@ -49,6 +49,12 @@ router.get("/:id", checkId, headphoneController.show);
 router.put(
   "/:id",
   [passportJWT, checkAdmin, checkId],
+  [
+    body("price")
+      .isNumeric()
+      .withMessage("Please should enter a number."),
+    body("stock").isNumeric().withMessage("Please should enter a number."),
+  ],
   headphoneController.update
 );
 router.delete(
