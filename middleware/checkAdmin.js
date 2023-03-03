@@ -5,7 +5,7 @@ module.exports.isAdmin = (req, res, next) => {
   } else {
     return res.status(403).json({
       error: {
-        massage: "Admin only",
+        massage: "Admin only ❕",
       },
     });
   }

@@ -51,7 +51,7 @@ exports.insert = async (req, res, next) => {
 
     const checkBrand = await Brand.findOne({ _id: brand });
     if (!checkBrand) {
-      const error = new Error("The shop has no data on this brand ID.❗");
+      const error = new Error("The shop has no data on this brand ID ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -137,7 +137,7 @@ exports.update = async (req, res, next) => {
     });
 
     if (!headphone) {
-      const error = new Error("Headphone not founded. ❗");
+      const error = new Error("Headphone not founded ❗");
       error.statusCode = 400;
       throw error;
     }
@@ -165,7 +165,7 @@ exports.delete = async (req, res, next) => {
     });
 
     if (headphone.deletedCount === 0) {
-      const error = new Error("Headphone not founded.❗");
+      const error = new Error("Headphone not founded ❗");
       error.statusCode = 400;
       throw error;
     }
