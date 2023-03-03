@@ -55,7 +55,7 @@ router.post(
   userController.login
 );
 
-router.put("/:id", [passportJWT,checkId], userController.update);
+router.put("/me/update", [passportJWT], userController.update);
 router.delete("/:id", [passportJWT,checkId], userController.delete);
 
 module.exports = router;
