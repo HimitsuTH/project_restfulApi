@@ -5,10 +5,19 @@ const Headphone = require("@models/headphone");
 const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
-  const shops = await Shop.find().select("name description").sort({ _id: -1 });
+  const shops = await Shop.findOne({ _id: "63e3584636e6de24b0920d4a" }).select(
+    "name description address"
+  );
+
+  const setShop =  {
+    id: shops._id,
+    name: shops.name,
+    description: shops.description,
+    address: shops.address,
+  };
 
   res.status(200).json({
-    data: shops,
+    data: setShop,
   });
 };
 
