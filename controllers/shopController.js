@@ -10,7 +10,7 @@ exports.index = async (req, res, next) => {
     "name description address"
   );
 
-  const setShop =  {
+  const setShop = {
     id: shops._id,
     name: shops.name,
     description: shops.description,
@@ -79,7 +79,6 @@ exports.index = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-  
     const { name, description } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -194,7 +193,9 @@ exports.showBrand = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-    const brand = await Brand.findById(id).select("name description").populate("headphones","-createdAt -updatedAt -__v");
+    const brand = await Brand.findById(id)
+      .select("name description")
+      .populate("headphones", "-createdAt -updatedAt -__v");
 
     if (!brand) {
       const error = new Error("Brand not founded ❗");
