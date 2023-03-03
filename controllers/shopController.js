@@ -1,11 +1,12 @@
 const Shop = require("@models/shop");
 const Brand = require("@models/brand");
 const Headphone = require("@models/headphone");
+const config = require("@config/index");
 
 const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
-  const shops = await Shop.findOne({ _id: "63e3584636e6de24b0920d4a" }).select(
+  const shops = await Shop.findOne({ _id: config.SHOP_ID }).select(
     "name description address"
   );
 
