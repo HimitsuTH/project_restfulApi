@@ -128,7 +128,7 @@ exports.update = async (req, res, next) => {
 
     const user = await User.findById(id);
 
-    const updateUser = await User.updateOne(
+    const updateUser = await User.findByIdAndUpdate(
       { _id: id },
       {
         ...(name && { name }),
@@ -136,7 +136,7 @@ exports.update = async (req, res, next) => {
       }
     );
 
-    if (updateUser.nModified === 0) {
+    if (!updateUser) {
       const error = new Error("User not founded. ❗");
       error.statusCode = 400;
       throw error;
