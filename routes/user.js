@@ -44,7 +44,7 @@ router.post(
       .isEmpty()
       .withMessage("Please Enter Email.")
       .isEmail()
-      .withMessage("Email not match"),
+      .withMessage("Email not match."),
     body("password")
       .not()
       .isEmpty()
@@ -55,7 +55,16 @@ router.post(
   userController.login
 );
 
-router.put("/me/update", [passportJWT], userController.update);
-router.delete("/:id", [passportJWT,checkId], userController.delete);
+router.put(
+  "/me/update",
+  passportJWT,
+  [
+    body("password")
+      .isLength({ min: 6 })
+      .withMessage("Password should have more than 5 character."),
+  ],
+  userController.update
+);
+router.delete("/:id", [passportJWT, checkId], userController.delete);
 
 module.exports = router;
