@@ -147,7 +147,7 @@ exports.insertBrand = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-    const checkBrandName = await Brand.findOne({ name: name });
+    const checkBrandName = await Brand.findOne({ name: name.toLowerCase() });
 
     if (checkBrandName) {
       const error = new Error("Brand has alrealy exist!");
@@ -164,9 +164,9 @@ exports.insertBrand = async (req, res, next) => {
 
     // set state value
     const brand = new Brand({
-      name,
-      description,
-      shop,
+      name: name,
+      description: description,
+      shop: shop,
     });
 
     // save
