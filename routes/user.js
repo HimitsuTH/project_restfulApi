@@ -55,11 +55,11 @@ router.post(
   userController.login
 );
 
-router.put(
-  "/me/",
-  passportJWT,
-  userController.update
+router.put("/me/", passportJWT, userController.update);
+router.delete(
+  "/:id",
+  [passportJWT, checkAdmin, checkId],
+  userController.delete
 );
-router.delete("/:id", [passportJWT,checkAdmin,checkId], userController.delete);
 
 module.exports = router;
