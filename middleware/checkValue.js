@@ -12,3 +12,7 @@ module.exports.checkId = [
     .isMongoId()
     .withMessage("_id must be a valid ObjectId"),
 ];
+
+module.exports.checkNumber = (value) => {
+  return typeof value === "number"
+}
