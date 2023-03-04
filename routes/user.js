@@ -56,7 +56,7 @@ router.post(
 );
 
 router.put(
-  "/me/update",
+  "/me/",
   passportJWT,
   userController.update
 );
