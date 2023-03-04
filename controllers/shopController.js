@@ -135,8 +135,21 @@ exports.brandIndex = async (req, res, next) => {
     .sort({ _id: -1 })
     .select("name description ");
 
+  let setBrand = [];
+
+  await brands.map((brand) => {
+    setBrand = [
+      ...setBrand,
+      {
+        id: brand.id,
+        name: brand.name,
+        description: brand.description,
+      },
+    ];
+  });
+
   res.status(200).json({
-    data: brands,
+    data: setBrand,
   });
 };
 
