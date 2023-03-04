@@ -164,7 +164,7 @@ exports.delete = async (req, res, next) => {
       _id: id,
     });
 
-    if (headphone.deletedCount === 0) {
+    if (!headphone) {
       const error = new Error("Headphone not founded ❗");
       error.statusCode = 400;
       throw error;
