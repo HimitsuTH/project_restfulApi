@@ -3,7 +3,7 @@ let router = express.Router();
 const shopController = require("@controllers/shopController");
 const passportJWT = require("@middleware/passportJWT").isLogin;
 const checkAdmin = require("@middleware/checkAdmin").isAdmin;
-const checkId = require("@middleware/checkId").checkId;
+const checkId = require("@middleware/checkValue").checkId;
 const { body } = require("express-validator");
 
 

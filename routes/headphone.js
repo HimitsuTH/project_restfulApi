@@ -4,8 +4,7 @@ const { body } = require("express-validator");
 const headphoneController = require("@controllers/headphoneController");
 const passportJWT = require("@middleware/passportJWT").isLogin;
 const checkAdmin = require("@middleware/checkAdmin").isAdmin;
-const checkId = require("@middleware/checkId").checkId;
-
+const checkId = require("@middleware/checkValue").checkId;
 
 /* GET users listing. */
 router.get("/", headphoneController.index);
@@ -50,9 +49,7 @@ router.put(
   "/:id",
   [passportJWT, checkAdmin, checkId],
   [
-    body("price")
-      .isNumeric()
-      .withMessage("Please should enter a number."),
+    body("price").not().isNumeric().withMessage("Please should enter a number."),
     body("stock").isNumeric().withMessage("Please should enter a number."),
   ],
   headphoneController.update

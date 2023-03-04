@@ -4,7 +4,7 @@ const { body } = require("express-validator");
 const userController = require("@controllers/userController");
 const passportJWT = require("@middleware/passportJWT").isLogin;
 const checkAdmin = require("@middleware/checkAdmin").isAdmin;
-const checkId = require("@middleware/checkId").checkId;
+const checkId = require("@middleware/checkValue").checkId;
 
 /* GET users listing. */
 router.get("/", [passportJWT, checkAdmin], userController.index);
