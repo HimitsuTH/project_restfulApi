@@ -206,18 +206,43 @@ exports.showBrand = async (req, res, next) => {
       error.validation = errors.array();
       throw error;
     }
-    const brand = await Brand.findById(id)
-      .select("name description")
-      .populate("headphones", "-createdAt -updatedAt -__v");
+    const brand = await Brand.findOne({ _id: id });
 
     if (!brand) {
       const error = new Error("Brand not founded ❗");
       error.statusCode = 400;
       throw error;
-    }
+    } const headphones = await Headphone.find({
+      brand: id,
+    }).populate("brand");
+
+    let setHeadPhone = [];
+    let brandName;
+    let brandId;
+
+    headphones.map((headphone) => {
+      brandName = headphone.brand.name;
+      brandId = headphone.brand.id;
+      setHeadPhone = [
+        ...setHeadPhone,
+        {
+          id: headphone.id,
+          name: headphone.name,
+          price: headphone.price,
+          stock: headphone.stock,
+          category: headphone.category,
+          description: headphone.description,
+          warranty: headphone.warranty,
+        },
+      ];
+    });
 
     res.status(200).json({
-      data: brand,
+      brand: {
+        id: brandId,
+        name: brandName,
+      },
+      data: setHeadPhone,
     });
   } catch (err) {
     next(err);
@@ -283,7 +308,7 @@ exports.deleteBrand = async (req, res, next) => {
     // console.log(headphones);
     if (headphones.length > 0) {
       const error = new Error(
-        "Can't no delete brand(have some item in brand)🛑"
+        "Can't delete brand(have some item in brand)🛑"
       );
       error.statusCode = 400;
       throw error;
