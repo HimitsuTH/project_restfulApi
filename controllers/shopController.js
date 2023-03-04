@@ -217,12 +217,16 @@ exports.showBrand = async (req, res, next) => {
     }).populate("brand");
 
     let setHeadPhone = [];
-    let brandName;
-    let brandId;
+    let setBrand = {};
+    
 
     headphones.map((headphone) => {
-      brandName = headphone.brand.name;
-      brandId = headphone.brand.id;
+
+      setBrand = {
+        id: headphone.brand.id,
+        name: headphone.brand.name,
+      };
+  
       setHeadPhone = [
         ...setHeadPhone,
         {
@@ -238,11 +242,10 @@ exports.showBrand = async (req, res, next) => {
     });
 
     res.status(200).json({
-      brand: {
-        id: brandId,
-        name: brandName,
+      data: {
+        brand: setBrand,
+        headphones: setHeadPhone
       },
-      data: setHeadPhone,
     });
   } catch (err) {
     next(err);
