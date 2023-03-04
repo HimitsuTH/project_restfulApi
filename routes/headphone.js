@@ -37,7 +37,10 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Please enter the product description."),
-    body("stock").isNumeric().withMessage("Please should enter a number."),
+    body("stock")
+      .optional()
+      .isNumeric()
+      .withMessage("Please should enter a number."),
   ],
   headphoneController.insert
 );
@@ -49,8 +52,14 @@ router.put(
   "/:id",
   [passportJWT, checkAdmin, checkId],
   [
-    body("price").not().isNumeric().withMessage("Please should enter a number."),
-    body("stock").isNumeric().withMessage("Please should enter a number."),
+    body("price")
+      .optional()
+      .isNumeric()
+      .withMessage("Please should enter a number."),
+    body("stock")
+      .optional()
+      .isNumeric()
+      .withMessage("Please should enter a number."),
   ],
   headphoneController.update
 );
