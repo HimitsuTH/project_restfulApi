@@ -17,9 +17,7 @@ exports.index = async (req, res, next) => {
     address: shops.address,
   };
 
-  res.status(200).json({
-    data: setShop,
-  });
+  res.status(200).json(setShop);
 };
 
 // exports.insert = async (req, res, next) => {
@@ -148,9 +146,7 @@ exports.brandIndex = async (req, res, next) => {
     ];
   });
 
-  res.status(200).json({
-    data: setBrand,
-  });
+  res.status(200).json(setBrand);
 };
 
 exports.insertBrand = async (req, res, next) => {
@@ -242,10 +238,8 @@ exports.showBrand = async (req, res, next) => {
     });
 
     res.status(200).json({
-      data: {
-        brand: setBrand,
-        headphones: setHeadPhone
-      },
+      brand: setBrand,
+      headphones: setHeadPhone,
     });
   } catch (err) {
     next(err);
