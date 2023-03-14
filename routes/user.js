@@ -26,7 +26,7 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Please Enter Password.")
-      .isLength({ min: 5 })
+      .isLength({ min: 6 })
       .withMessage("Password should have more than 5 character."),
   ],
   userController.register
@@ -49,7 +49,7 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Please Enter Password.")
-      .isLength({ min: 5 })
+      .isLength({ min: 6 })
       .withMessage("Password should have more than 5 character."),
   ],
   userController.login
