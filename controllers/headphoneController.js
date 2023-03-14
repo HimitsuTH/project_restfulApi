@@ -40,7 +40,7 @@ exports.insert = async (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -51,7 +51,7 @@ exports.insert = async (req, res, next) => {
 
     const checkBrand = await Brand.findOne({ _id: brand });
     if (!checkBrand) {
-      const error = new Error("The shop has no data on this brand ID ❗");
+      const error = new Error("The shop has no data on this brand ID.");
       error.statusCode = 400;
       throw error;
     }
@@ -81,7 +81,7 @@ exports.show = async (req, res, next) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -89,7 +89,7 @@ exports.show = async (req, res, next) => {
     const headphone = await Headphone.findById(id).populate("brand");
 
     if (!headphone) {
-      const error = new Error("headphone not founded ❗");
+      const error = new Error("headphone not founded.");
       error.statusCode = 400;
       throw error;
     }
@@ -121,7 +121,7 @@ exports.update = async (req, res, next) => {
     const { name, price, stock, description, category, warranty } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -137,7 +137,7 @@ exports.update = async (req, res, next) => {
     });
 
     if (!headphone) {
-      const error = new Error("Headphone not founded ❗");
+      const error = new Error("Headphone not founded.");
       error.statusCode = 400;
       throw error;
     }
@@ -154,7 +154,7 @@ exports.delete = async (req, res, next) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -165,7 +165,7 @@ exports.delete = async (req, res, next) => {
     });
 
     if (!headphone) {
-      const error = new Error("Headphone not founded ❗");
+      const error = new Error("Headphone not founded.");
       error.statusCode = 400;
       throw error;
     }

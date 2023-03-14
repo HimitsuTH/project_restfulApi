@@ -30,11 +30,11 @@ router.post(
   [
     passportJWT,
     checkAdmin,
-    body("name").not().isEmpty().withMessage("Please Enter Brand name❗"),
+    body("name").not().isEmpty().withMessage("Please Enter Brand name."),
     body("description")
       .not()
       .isEmpty()
-      .withMessage("Please Enter Description❗"),
+      .withMessage("Please Enter Description."),
     body("shop")
       .not()
       .isEmpty()

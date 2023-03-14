@@ -25,7 +25,7 @@ exports.index = async (req, res, next) => {
 //     const { name, description } = req.body;
 //     const errors = validationResult(req);
 //     if (!errors.isEmpty()) {
-//       const error = new Error("received incorrect information ❗");
+//       const error = new Error("received incorrect information.");
 //       error.statusCode = 422;
 //       error.validation = errors.array();
 //       throw error;
@@ -52,7 +52,7 @@ exports.index = async (req, res, next) => {
 
 //     const errors = validationResult(req);
 //     if (!errors.isEmpty()) {
-//       const error = new Error("received incorrect information.❗");
+//       const error = new Error("received incorrect information.");
 //       error.statusCode = 422;
 //       error.validation = errors.array();
 //       throw error;
@@ -62,7 +62,7 @@ exports.index = async (req, res, next) => {
 //       .select("name description");
 
 //     if (!shop) {
-//       const error = new Error("Shop not founded ❗");
+//       const error = new Error("Shop not founded ");
 //       error.statusCode = 400;
 //       throw error;
 //     }
@@ -80,7 +80,7 @@ exports.update = async (req, res, next) => {
     const { name, description } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -95,7 +95,7 @@ exports.update = async (req, res, next) => {
     );
 
     if (!shop) {
-      const error = new Error("Shop not founded ❗");
+      const error = new Error("Shop not founded.");
       error.statusCode = 400;
       throw error;
     }
@@ -113,7 +113,7 @@ exports.update = async (req, res, next) => {
 //     const shop = await Shop.deleteOne({ _id: id });
 
 //     if (shop.deletedCount === 0) {
-//       const error = new Error("Shop not founded ❗");
+//       const error = new Error("Shop not founded.");
 //       error.statusCode = 400;
 //       throw error;
 //     }
@@ -154,7 +154,7 @@ exports.insertBrand = async (req, res, next) => {
     const { name, description, shop } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -169,7 +169,7 @@ exports.insertBrand = async (req, res, next) => {
 
     const checkShop = await Shop.findOne({ _id: shop });
     if (!checkShop) {
-      const error = new Error("Shop not founded ❗");
+      const error = new Error("Shop not founded.");
       error.statusCode = 400;
       throw error;
     }
@@ -197,7 +197,7 @@ exports.showBrand = async (req, res, next) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -205,7 +205,7 @@ exports.showBrand = async (req, res, next) => {
     const brand = await Brand.findOne({ _id: id });
 
     if (!brand) {
-      const error = new Error("Brand not founded ❗");
+      const error = new Error("Brand not founded.");
       error.statusCode = 400;
       throw error;
     } const headphones = await Headphone.find({
@@ -251,7 +251,7 @@ exports.showBrand = async (req, res, next) => {
 //     const { id } = req.params;
 //     const errors = validationResult(req);
 //     if (!errors.isEmpty()) {
-//       const error = new Error("received incorrect information ❗");
+//       const error = new Error("received incorrect information.");
 //       error.statusCode = 422;
 //       error.validation = errors.array();
 //       throw error;
@@ -294,7 +294,7 @@ exports.deleteBrand = async (req, res, next) => {
     const { id } = req.params;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -313,7 +313,7 @@ exports.deleteBrand = async (req, res, next) => {
       const brand = await Brand.deleteOne({ _id: id });
       // console.log(brand);
       if (brand.deletedCount === 0) {
-        const error = new Error("Brand ID not founded ❗");
+        const error = new Error("Brand ID not founded.");
         error.statusCode = 400;
         throw error;
       }

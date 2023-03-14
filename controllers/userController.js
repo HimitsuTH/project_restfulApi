@@ -16,7 +16,7 @@ exports.register = async (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -25,7 +25,7 @@ exports.register = async (req, res, next) => {
     const existEmail = await User.findOne({ email: email });
 
     if (existEmail) {
-      const error = new Error("Email has alrealy exist ❗");
+      const error = new Error("Email has alrealy exist.");
       error.statusCode = 400;
       throw error;
     }
@@ -52,7 +52,7 @@ exports.login = async (req, res, next) => {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -60,14 +60,14 @@ exports.login = async (req, res, next) => {
 
     const user = await User.findOne({ email: email });
     if (!user) {
-      const error = new Error("User has alrealy exist ❗");
+      const error = new Error("User has alrealy exist.");
       error.statusCode = 404;
       throw error;
     }
 
     const isValid = await user.checkPassword(password);
     if (!isValid) {
-      const error = new Error("password not match ❗");
+      const error = new Error("password not match.");
       error.statusCode = 401;
       throw error;
     }
@@ -114,7 +114,7 @@ exports.update = async (req, res, next) => {
     const { name, password } = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information ❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -146,7 +146,7 @@ exports.update = async (req, res, next) => {
     );
 
     if (!updateUser) {
-      const error = new Error("User not founded. ❗");
+      const error = new Error("User not founded.");
       error.statusCode = 400;
       throw error;
     }
@@ -164,7 +164,7 @@ exports.delete = async (req, res, next) => {
     // Error on param
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("received incorrect information.❗");
+      const error = new Error("received incorrect information.");
       error.statusCode = 422;
       error.validation = errors.array();
       throw error;
@@ -173,7 +173,7 @@ exports.delete = async (req, res, next) => {
     // console.log(beforeDelete);
 
     if (user.deletedCount === 0) {
-      const error = new Error("User ID not founded. ❗");
+      const error = new Error("User ID not founded.");
       error.statusCode = 400;
       throw error;
     }

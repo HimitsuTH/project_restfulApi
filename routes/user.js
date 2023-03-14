@@ -21,7 +21,7 @@ router.post(
       .isEmpty()
       .withMessage("Please Enter Email.")
       .isEmail()
-      .withMessage("Email not match"),
+      .withMessage("Invalid email format"),
     body("password")
       .not()
       .isEmpty()
@@ -44,13 +44,13 @@ router.post(
       .isEmpty()
       .withMessage("Please Enter Email.")
       .isEmail()
-      .withMessage("Email not match."),
+      .withMessage("Invalid email format."),
     body("password")
       .not()
       .isEmpty()
       .withMessage("Please Enter Password.")
-      .isLength({ min: 6 })
-      .withMessage("Password should have more than 5 character."),
+      // .isLength({ min: 6 })
+      // .withMessage("Password should have more than 5 character."),
   ],
   userController.login
 );
