@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const core = require('cors')
 require("module-alias/register");
 
 const app = express();
@@ -29,14 +30,16 @@ const userRouter = require("@routes/user");
 //not used
 // const brandRouter = require("./routes/brand")
 
+
+
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Credentials", "*");
+  res.header("Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+app.use(core());
 
 app.use(logger("dev"));
 app.use(
