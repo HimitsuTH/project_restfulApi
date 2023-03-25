@@ -43,6 +43,7 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Please Enter Email.")
+      .optional()
       .isEmail()
       .withMessage("Invalid email format."),
     body("password")
