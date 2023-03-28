@@ -99,6 +99,7 @@ exports.show = async (req, res, next) => {
         id: headphone.id,
         name: headphone.name,
         brand: headphone.brand.name,
+        brand_id: headphone.brand.id,
         price: headphone.price,
         stock: headphone.stock,
         category: headphone.category,
