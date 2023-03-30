@@ -4,6 +4,40 @@ const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
   try {
+    const headphones = await Headphone.find()
+      .sort({ _id: -1 })
+      .populate("brand");
+
+    // console.log(headphones.length);
+    // console.log(headphones);
+
+    let setHeadPhone = [];
+
+    await headphones.map((headphone) => {
+      setHeadPhone = [
+        ...setHeadPhone,
+        {
+          id: headphone.id,
+          name: headphone.name,
+          brand: headphone.brand.name,
+          price: headphone.price,
+          stock: headphone.stock,
+          category: headphone.category,
+          description: headphone.description,
+          warranty: headphone.warranty,
+        },
+      ];
+    });
+
+    res.status(200).json({
+      data: setHeadPhone,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+exports.page = async (req, res, next) => {
+  try {
     const page = req.param("page") > 0 ? req.param("page") : 0;
     // console.log(page);
     const perPage = 5;

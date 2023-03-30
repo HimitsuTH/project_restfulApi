@@ -7,7 +7,8 @@ const checkAdmin = require("@middleware/checkAdmin").isAdmin;
 const checkId = require("@middleware/checkValue").checkId;
 
 /* GET users listing. */
-router.get("/?:page?", headphoneController.index);
+router.get("/", headphoneController.index);
+router.get("/page?=?:page?", headphoneController.page);
 router.post(
   "/",
   [
