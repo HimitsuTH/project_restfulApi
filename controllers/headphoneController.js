@@ -40,7 +40,7 @@ exports.page = async (req, res, next) => {
   try {
     const page = req.param("page") > 0 ? req.param("page") : 0;
     // console.log(page);
-    const perPage = 5;
+    const perPage = 6;
     const headphones = await Headphone.find()
       .sort({ _id: -1 })
       .limit(perPage)
