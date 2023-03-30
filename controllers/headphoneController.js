@@ -4,9 +4,17 @@ const { validationResult } = require("express-validator");
 
 exports.index = async (req, res, next) => {
   try {
+    const page = req.param("page") > 0 ? req.param("page") : 0;
+    // console.log(page);
+    const perPage = 5;
     const headphones = await Headphone.find()
       .sort({ _id: -1 })
+      .limit(perPage)
+      .skip(perPage * page)
       .populate("brand");
+
+    // console.log(headphones.length);
+    // console.log(headphones);
 
     let setHeadPhone = [];
 
@@ -36,7 +44,8 @@ exports.index = async (req, res, next) => {
 
 exports.insert = async (req, res, next) => {
   try {
-    const { name, brand, price, stock, description, category, warranty } = req.body;
+    const { name, brand, price, stock, description, category, warranty } =
+      req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
