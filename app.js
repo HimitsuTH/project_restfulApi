@@ -31,7 +31,7 @@ const userRouter = require("@routes/user");
 // const brandRouter = require("./routes/brand")
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:4000 , https://fantastic-baklava-abaad2.netlify.app");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Methods",
     "POST, GET, PUT, PATCH, DELETE, OPTIONS"
