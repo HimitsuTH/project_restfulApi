@@ -30,18 +30,19 @@ const userRouter = require("@routes/user");
 //not used
 // const brandRouter = require("./routes/brand")
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Methods",
-    "POST, GET, PUT, PATCH, DELETE, OPTIONS"
-  );
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Option, Authorization"
-  );
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Methods",
+//     "POST, GET, PUT, PATCH, DELETE, OPTIONS"
+//   );
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Content-Type, Option, Authorization"
+//   );
+//   next();
+// });
+app.use(core());
 
 app.use(logger("dev"));
 app.use(
